@@ -1,0 +1,2 @@
+class ViewTruckCommand:
+    pass

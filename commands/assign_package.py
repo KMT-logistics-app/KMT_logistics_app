@@ -1,0 +1,2 @@
+class AssignPackageCommand:
+    pass

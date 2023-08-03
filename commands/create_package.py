@@ -1,0 +1,2 @@
+class CreatePackageCommand:
+    pass
