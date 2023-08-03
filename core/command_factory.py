@@ -1,7 +1,7 @@
 from commands.assign_package import AssignPackageCommand
 from commands.assign_truck import AssignTruckCommand
 from commands.create_package import CreatePackageCommand
-from commands.create_route import CreateRouteCommand
+from commands.create_delivery_route import CreateRouteCommand
 from commands.find_route import FindRouteCommand
 from commands.view_package import ViewPackageCommand
 from commands.view_route import ViewRouteCommand
@@ -15,14 +15,16 @@ class CommandFactory:
     def create(self, input_line):
         cmd, *params = input_line.split()
 
-
         if cmd.lower() == "assignpackage":
+            # "assignpackage 501 to truck 1011"
             return AssignPackageCommand(params, self._app_data)
         if cmd.lower() == "assigntruck":
+            # "assign truck 1011 to route 102"
             return AssignTruckCommand(params, self._app_data)
         if cmd.lower() == "createpackage":
             return CreatePackageCommand(params, self._app_data)
         if cmd.lower() == "createroute":
+            # "createroute Sofia-Varna"
             return CreateRouteCommand(params, self._app_data)
         if cmd.lower() == "findroute":
             return FindRouteCommand(params, self._app_data)
@@ -32,6 +34,9 @@ class CommandFactory:
             return ViewRouteCommand(params, self._app_data)
         if cmd.lower() == "viewtruck":
             return ViewTruckCommand(params, self._app_data)
-        
 
-        raise ValueError(f'Invalid command: {cmd}')
+        raise ValueError(f"Invalid command: {cmd}")
+
+    # unique id, and a list of locations
+    # The first location is the starting location – it has a departure time.
+    # The other locations have expected arrival time.
