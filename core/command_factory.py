@@ -22,21 +22,22 @@ class CommandFactory:
             # "assign truck 1011 to route 102"
             return AssignTruckCommand(params, self._app_data)
         if cmd.lower() == "createpackage":
+            # "createpackage Sofia Varna 500kg Ivan_Ivanov"
             return CreatePackageCommand(params, self._app_data)
         if cmd.lower() == "createroute":
-            # "createroute Sofia-Varna"
+            # "createroute Sofia Varna"
             return CreateRouteCommand(params, self._app_data)
         if cmd.lower() == "findroute":
             return FindRouteCommand(params, self._app_data)
+            # "findroute Sofia Varna"
         if cmd.lower() == "viewpackage":
             return ViewPackageCommand(params, self._app_data)
+            # "viewpackage 501"
         if cmd.lower() == "viewroute":
             return ViewRouteCommand(params, self._app_data)
+            # "viewroute 5"
         if cmd.lower() == "viewtruck":
+            # "viewtruck 1011"
             return ViewTruckCommand(params, self._app_data)
 
         raise ValueError(f"Invalid command: {cmd}")
-
-    # unique id, and a list of locations
-    # The first location is the starting location – it has a departure time.
-    # The other locations have expected arrival time.
