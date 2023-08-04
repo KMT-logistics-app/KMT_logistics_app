@@ -49,7 +49,7 @@ class Truck:
 
 
     def load_package(self, package: Package):
-        if self.capacity_left + package.weight > self.CAPACITY:
+        if self.capacity_left() + package.weight > self.CAPACITY:
             raise TruckFullError
         self._packages.append(package)
         package.time_loaded(datetime.now())
