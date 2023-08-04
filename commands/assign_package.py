@@ -1,6 +1,6 @@
 from validation_helpers import validate_params_count
 from core.application_data import ApplicationData
-
+from models.truck import Truck
 
 class AssignPackageCommand:
     def __init__(self, params, app_data: ApplicationData):
@@ -19,7 +19,9 @@ class AssignPackageCommand:
 
         if truck.capacity_left >= package.weight:
             # трябва да сложим 1 такъв метод в камионите
-            truck.assign_package(package)
+            # Калоян: такава проверка съм разписал и в самия метод в truck класа, трябва да решим 
+            # коя от двете ще оставим
+            truck.assign_package(package) # Калоян: truck.load_package съм кръстил метода
             return f"Package {package_id} assigned to truck {truck_id}"
         else:
             return (

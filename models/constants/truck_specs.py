@@ -1,11 +1,11 @@
 
 class TruckStatus:
     FREE = 'free'
-    OCCUPIED = 'occupied'
+    FULL = 'full'
 
 
 class TruckBrand:
     MAN = 'Man'
     SCANIA = 'Scania'
     ACTROSS = 'Actross'
-    
+    truck_brands = [ACTROSS, MAN, SCANIA]

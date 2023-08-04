@@ -5,7 +5,7 @@ class Scania(Truck):
     ID_SCANIA = 1000
     CAPACITY = 42000
     MAX_RANGE = 8000
-    def __init__(self) -> None:
+    def __init__(self):
         self._brand = TruckBrand.SCANIA
         self._truck_id = self.create_id()
         self._status = TruckStatus.FREE

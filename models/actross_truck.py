@@ -6,7 +6,7 @@ class Actross(Truck):
     CAPACITY = 26000
     MAX_RANGE = 13000
 
-    def __init__(self) -> None:
+    def __init__(self):
         self._brand = TruckBrand.ACTROSS
         self._truck_id = self.create_id()
         self._status = TruckStatus.FREE

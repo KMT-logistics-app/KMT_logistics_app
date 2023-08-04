@@ -14,7 +14,7 @@ class FindRouteCommand:
         route = self._app_data.find_route_by_locations(start_location, delivery_adress)
         # този метод трябва да се напише в app_data.
         # ако намери път, трябва да върне пътя
-        # ако не намери път да връща грешка с текс "Няма намерен път от {start_location} до {delivery_adress}"
+        # ако не намери път да връща грешка с текст "Няма намерен път от {start_location} до {delivery_adress}"
 
         return f"{route}"
         # тук връща __STR__ имплементацията на пътя

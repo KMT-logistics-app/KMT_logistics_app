@@ -5,7 +5,7 @@ class Man(Truck):
     ID_MAN = 1010
     CAPACITY = 37000
     MAX_RANGE = 10000
-    def __init__(self) -> None:
+    def __init__(self):
         self._brand = TruckBrand.MAN
         self._truck_id = self.create_id()
         self._status = TruckStatus.FREE

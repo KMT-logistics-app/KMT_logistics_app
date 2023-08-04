@@ -17,5 +17,6 @@ class CreatePackageCommand:
         # create_package трябва да се напише в application_data и освен, че създава пакета, трябва да го добавя в списъка с пакети
         # в самия Package клас трябв да се сложи counter, който започва от 1, за да може
         #  при създаването на пакети да се инициализира автоматично ID
+        # Калоян: weight трябва да опитваме да се парсне към float (14,5кг е валидно тегло) try_parse_float() функция
 
         return f"Package from {customer_info} was created."
