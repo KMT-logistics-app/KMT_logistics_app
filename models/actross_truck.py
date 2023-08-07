@@ -12,6 +12,8 @@ class Actross(Truck):
         self._status = TruckStatus.FREE
         self._capacity = Actross.CAPACITY
         self._mileage = Actross.MAX_RANGE
+    
+    
     def create_id(self):
         Actross.ID_ACTROSS += 1
         return Actross.ID_ACTROSS

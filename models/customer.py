@@ -70,5 +70,3 @@ class Customer:
             {new_line}Packages: {len(self.packages)}\
             {new_line}{new_line.join(packages)}'
     
-
-

@@ -8,7 +8,7 @@ class Package:
         self.weight: float = weight
         self._start_location: str = start_location
         self._end_location: str = end_location
-        self._contact_info: Customer = str(contact_info)
+        self._contact_info: Customer = str(contact_info) # to be modified
         self._id = self.create_id()
         self.status = Package_status.ACCEPTED
         self._accepted_time = datetime.now()
@@ -26,6 +26,11 @@ class Package:
             raise ValueError('Package should weigh more than 0.0kgs')
         
         self._weight = value
+
+
+    @property
+    def package_id(self):
+        return self._id
 
 
     @property
