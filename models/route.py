@@ -35,6 +35,9 @@ class Route:
     def assign_package(self, pack):  # добавено от Трифон
         self._packages.append(pack)
 
+    def assign_truck(self, truck: Truck):  # разкоментирано от Трифон
+        self.trucks.append(truck)
+
     @property
     def route_id(self):
         return self._id
@@ -80,9 +83,6 @@ class Route:
     def create_id(self):
         Route.ROUTE_ID += 1
         return Route.ROUTE_ID
-
-    # def assign_truck(self, truck: Truck):
-    #     pass
 
     def __str__(self) -> str:
         new_line = "\n"
