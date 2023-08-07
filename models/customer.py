@@ -62,6 +62,10 @@ class Customer:
         self._email = value
     
 
+    def contact_info(self):
+        return [self.first_name, self.last_name, self.email]
+
+
     def __str__(self) -> str:
         new_line = '\n'
         packages = [str(pack) for pack in self.packages]
