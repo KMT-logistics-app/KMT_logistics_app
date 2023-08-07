@@ -1,17 +1,17 @@
 from constants.truck_specs import TruckBrand, TruckStatus
 from errors.truck_full import TruckFullError
 from models.package import Package
-from models.warehouse import Warehouse
+from models.route import Route
 from datetime import datetime
 
 class Truck:
-    def __init__(self, brand) -> None:
+    def __init__(self, brand):
         self._brand = self.validate_brand(brand)
         self._truck_id = self.create_id()
         self._status = TruckStatus.FREE
-        self._route: list[Warehouse] = []
+        self._route: Route = []
         self._packages: list(Package) = []
-
+        self._speed = 87
 
     @property
     def brand(self):
@@ -24,7 +24,7 @@ class Truck:
 
 
     @property
-    def routes(self):
+    def route(self):
         return tuple(self._route)
 
 
@@ -51,8 +51,10 @@ class Truck:
     def load_package(self, package: Package):
         if self.capacity_left() + package.weight > self.CAPACITY:
             raise TruckFullError
+        
         self._packages.append(package)
         package.time_loaded(datetime.now())
+
         if self.capacity_left() == 0:
             self._status = TruckStatus.FULL
 
@@ -72,4 +74,4 @@ class Truck:
 
 
     def __str__(self) -> str:
-        return f'Brand: {self.brand}\nId: {self.truck_id}\nPackages: 0'
+        return f'Brand: {self.brand}\nId: {self.truck_id}\nPackages: {len(self.packages)}'

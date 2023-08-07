@@ -1,14 +1,13 @@
 from models.constants.packages import Package_status
 from models.customer import Customer
-from models.warehouse import Warehouse
 from datetime import datetime
 
 class Package:
     id_counter = 0
     def __init__(self, weight, start_location, end_location, contact_info: Customer) -> None:
         self.weight: float = weight
-        self._start_location: Warehouse = start_location
-        self._end_location: Warehouse = end_location
+        self._start_location: str = start_location
+        self._end_location: str = end_location
         self._contact_info: Customer = str(contact_info)
         self._id = self.create_id()
         self.status = Package_status.ACCEPTED

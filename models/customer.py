@@ -1,17 +1,26 @@
-
+from models.package import Package
 
 class Customer:
     
-#     can:
+# can:
 # - send a package
 # - request package info
 # - receive a package
 # - leave feedback
 
+# has:
+# - first Name
+# - last name
+# - email
+# - packages
+
     def __init__(self, first_name, last_name, email) -> None:
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
+        self.packages: list[Package] = []
+
+
 
     @property
     def first_name(self):
@@ -54,7 +63,12 @@ class Customer:
     
 
     def __str__(self) -> str:
-        return f'Customer: {self.first_name} {self.last_name}\nEmail address: {self.email}'
+        new_line = '\n'
+        packages = [str(pack) for pack in self.packages]
+        return f'Customer: {self.first_name} {self.last_name}\
+            {new_line}Email address: {self.email}\
+            {new_line}Packages: {len(self.packages)}\
+            {new_line}{new_line.join(packages)}'
     
 
 
