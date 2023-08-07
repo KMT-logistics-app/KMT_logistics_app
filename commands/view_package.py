@@ -12,3 +12,5 @@ class ViewPackageCommand:
         package_id = self._params[0]
 
         package = self._app_data.find_package_by_id(package_id)
+
+        return f"{package}"
