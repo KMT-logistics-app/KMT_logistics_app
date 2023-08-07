@@ -4,8 +4,8 @@ from models.package import Package
 from models.route import Route
 from datetime import datetime
 
-class Truck:
 
+class Truck:
     TRUCK_ID = 1000
 
     def __init__(self):
@@ -22,37 +22,30 @@ class Truck:
     def brand(self):
         return self._brand
 
-
     @property
     def truck_id(self):
         return self._truck_id
-
 
     @property
     def route(self):
         return tuple(self._route)
 
-
     @property
     def packages(self):
         return tuple(self._packages)
-    
 
     @property
     def capacity(self):
         return self._capacity
-    
 
     @property
     def range(self):
         return self._range
 
-
     def create_id(self):
         Truck.TRUCK_ID += 1
         return Truck.TRUCK_ID
-    
-    
+
     def validate_brand(self, current_id):
         if current_id < 1011:
             return TruckBrand.SCANIA
@@ -63,44 +56,39 @@ class Truck:
         else:
             return TruckBrand.ACTROSS
 
-
     def validate_capacity(self):
         if self._brand == TruckBrand.SCANIA:
             return TruckSpecs.CAPACITY_SCANIA
-        
+
         if self._brand == TruckBrand.MAN:
             return TruckSpecs.CAPACITY_MAN
-        
+
         if self._brand == TruckBrand.ACTROSS:
             return TruckSpecs.CAPACITY_ACTROSS
-        
 
     def validate_range(self):
         if self._brand == TruckBrand.SCANIA:
             return TruckSpecs.MAX_RANGE_SCANIA
-        
+
         if self._brand == TruckBrand.MAN:
             return TruckSpecs.MAX_RANGE_MAN
-        
+
         if self._brand == TruckBrand.ACTROSS:
             return TruckSpecs.MAX_RANGE_ACTROSS
 
-    
-    def capacity_left(self):
-        total_packages_weight = sum(package.weight for package in self.packages)
-        return (self._capacity - total_packages_weight)
-
+    # def capacity_left(self): закоментирано от Трифон, защото май няма да ни трябва
+    #     total_packages_weight = sum(package.weight for package in self.packages)
+    #     return (self._capacity - total_packages_weight)
 
     def load_package(self, package: Package):
         if self.capacity_left() < package.weight:
             raise TruckFullError
-        
+
         self._packages.append(package)
         package.time_loaded(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
         if self.capacity_left() == 0:
             self._status = TruckStatus.FULL
-
 
     def unload_package(self, package: Package):
         if self._status == TruckStatus.FULL:
@@ -111,10 +99,10 @@ class Truck:
             self._packages.remove(package)
             package.time_delivered(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
-        
-        # тук трябва да е минала проверка find_package_by_id, която да е върнала 
+        # тук трябва да е минала проверка find_package_by_id, която да е върнала
         # Package обект и тук просто да се разтовари този package от камиона
 
-
     def __str__(self) -> str:
-        return f'Brand: {self.brand}\nId: {self.truck_id}\nPackages: {len(self.packages)}'
+        return (
+            f"Brand: {self.brand}\nId: {self.truck_id}\nPackages: {len(self.packages)}"
+        )
