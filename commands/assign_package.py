@@ -17,7 +17,7 @@ class AssignPackageCommand:
         # двете функции трябва да се добавят в app_data
         # трябва да връщат обект от съответните класове(package, route) и да връща грешка, ако не намира такива
 
-        if route.truck_capacity() >= package.weight:
+        if route.trucks_capacity() >= package.weight:
             route.assign_package(package)
             return f"Route {route_id} assigned package {package_id}."
         else:

@@ -99,9 +99,6 @@ class Truck:
             self._packages.remove(package)
             package.time_delivered(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
-        # тук трябва да е минала проверка find_package_by_id, която да е върнала
-        # Package обект и тук просто да се разтовари този package от камиона
-
     def __str__(self) -> str:
         return (
             f"Brand: {self.brand}\nId: {self.truck_id}\nPackages: {len(self.packages)}"
