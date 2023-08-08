@@ -10,7 +10,7 @@ class CreateRouteCommand:
         self._params = params
         self._app_data = app_data
 
-        # createroute Alice Springs Adelaide Melbourne Sydney Brisbane 2023/10/03/12/00
+        # "createroute, Sydney, Melbourne, 2023/08/08/16/00"
 
     def execute(self):
         route_points = self._params[:-1]
