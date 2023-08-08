@@ -21,6 +21,12 @@ class ApplicationData:
 
         return new_package
 
+
+    def create_truck(self):   # добавена от Калоян
+        truck = Truck()
+        self._trucks.append(truck)
+        return truck
+
     def find_package_by_id(self, pack_id):
         for pack in self._packages:
             if pack.id == pack_id:
@@ -34,8 +40,8 @@ class ApplicationData:
                 return truck
         return None
 
-    def create_delivery_route(self, starting_point, delivery_adress):
-        new_route = Route(starting_point, delivery_adress)
+    def create_route(self, route_points, departure_time):
+        new_route = Route(route_points, departure_time)
         self._routes.append(new_route)
         return new_route
 

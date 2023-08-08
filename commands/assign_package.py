@@ -1,4 +1,4 @@
-from validation_helpers import validate_params_count
+from commands.validation_helpers import validate_params_count
 from core.application_data import ApplicationData
 
 

@@ -1,23 +1,23 @@
 from models.constants.package_status import Package_status
+from models.constants.cities import Cities
 from models.customer import Customer
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class Package:
     id_counter = 0
 
-    def __init__(
-        self, weight, start_location, end_location, contact_info: Customer
-    ) -> None:
+    def __init__(self, start_location, end_location, weight, contact_info) -> None:
+
         self.weight: float = weight
         self._start_location: str = start_location
         self._end_location: str = end_location
-        self._contact_info: Customer = str(contact_info) # to be modified
+        self._contact_info = contact_info # to be modified
         self._id = self.create_id()
         self.status = Package_status.ACCEPTED
-        self._accepted_time = datetime.now()
+        self._accepted_time = datetime.now().strftime('%Y/%m/%d %H:%M')
         self._time_loaded = self.time_loaded()
-        self._delivered_time = self.time_delivered()
+        self._expected_delivery_time = self.est_delivery_time()
 
     @property
     def weight(self):
@@ -51,20 +51,23 @@ class Package:
         Package.id_counter += 1
         return Package.id_counter
 
-    def time_loaded(self, value):
+    def time_loaded(self): # да обсъдим дали има смисъл от този метод
         self.status = Package_status.LOADED
-        self._time_loaded = value
+        return datetime.today()
 
-    def time_delivered(self, value):
-        self.status = Package_status.DELIVERED
-        self._delivered_time = value
+    def est_delivery_time(self):
+        for current, next_city in Cities.DISTANCES.items():
+            if current == self._start_location:
+                for i in range(len(next_city)):
+                    if self._end_location == next_city[i][0]:
+                        return self._accepted_time + str(timedelta(hours=next_city[i][1] / 87).days)
 
     def package_details(self):
         return f"Weight {self.weight}kgs\nAccepted in {self.start_location} at {self._accepted_time}\nStatus: {self.status}"
 
     def __str__(self) -> str:
         if self.status == Package_status.ACCEPTED:
-            return f"Package: #{self._id}\nETA: tomorrow :)\nDetails: {self.package_details()}"
+            return f"Package: #{self._id}\nExpected delivery: {self._expected_delivery_time} :)\nDetails: {self.package_details()}"
 
 
 # класа трябва да има __str__ имплементация, защото ще се използва по-горе
@@ -75,4 +78,4 @@ class Package:
 # - end location
 # - contact information for the customer
 # - assigned status
-# expected delivery time -> to be implemented
+# - expected delivery time 

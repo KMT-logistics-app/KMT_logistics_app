@@ -21,16 +21,16 @@ class CommandFactory:
             # "assignpackage 501 to route 7"
             return AssignPackageCommand(params, self._app_data)
         if cmd.lower() == "createtruck":
-            # "createtruck 1011"
-            return CreateTruckCommand(params, self._app_data)
+            # "createtruck"
+            return CreateTruckCommand(self._app_data)
         if cmd.lower() == "assigntruck":
             # "assign truck 1011 to route 102"
             return AssignTruckCommand(params, self._app_data)
         if cmd.lower() == "createpackage":
-            # "createpackage Alice_Springs Adelaide 500kg Ivan_Ivanov"
+            # "createpackage Alice_Springs Adelaide 500kg Ivan_Ivanov ivan@mail.au"
             return CreatePackageCommand(params, self._app_data)
         if cmd.lower() == "createroute":
-            # "createroute Sydney Melbourne"
+            # "createroute Sydney Melbourne 2023/08/08/16/00"
             return CreateRouteCommand(params, self._app_data)
         if cmd.lower() == "findroute":
             return FindRouteCommand(params, self._app_data)
