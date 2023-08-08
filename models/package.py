@@ -1,22 +1,23 @@
 from models.constants.package_status import Package_status
-
-# from models.customer import Customer
+from models.customer import Customer
 from datetime import datetime
 
 
 class Package:
     id_counter = 0
 
-    def __init__(self, weight, start_location, end_location, contact_info) -> None:
+    def __init__(
+        self, weight, start_location, end_location, contact_info: Customer
+    ) -> None:
         self.weight: float = weight
         self._start_location: str = start_location
         self._end_location: str = end_location
-        self._contact_info: list = contact_info
+        self._contact_info: Customer = str(contact_info) # to be modified
         self._id = self.create_id()
         self.status = Package_status.ACCEPTED
-        self._history = []
-        self._accepted_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self._history.append(f"Package accepted on {self._accepted_time}")
+        self._accepted_time = datetime.now()
+        self._time_loaded = self.time_loaded()
+        self._delivered_time = self.time_delivered()
 
     @property
     def weight(self):
@@ -28,6 +29,7 @@ class Package:
             raise ValueError("Package should weigh more than 0.0kgs")
 
         self._weight = value
+
 
     @property
     def start_location(self):
@@ -51,26 +53,18 @@ class Package:
 
     def time_loaded(self, value):
         self.status = Package_status.LOADED
-        self._history.append(f"Package loaded on {value}")
+        self._time_loaded = value
 
     def time_delivered(self, value):
         self.status = Package_status.DELIVERED
-        self._history.append(f"Package delivered to {self.end_location} on {value}")
+        self._delivered_time = value
 
     def package_details(self):
-        # if self.status == Package_status.ACCEPTED:
-        return f"Weight {self.weight}kgs\
-            \nAccepted in {self.start_location} at {self._accepted_time}\
-            \nStatus: {self.status}"
-        # if self.status == Package_status.LOADED:
-        #     return f"Weight {self.weight}kgs\
-        #         \nLoaded in {self.start_location} at {self.time_loaded}\
-        #         \nStatus: {self.status}"
+        return f"Weight {self.weight}kgs\nAccepted in {self.start_location} at {self._accepted_time}\nStatus: {self.status}"
 
     def __str__(self) -> str:
-        return (
-            f"Package: #{self._id}\nETA: tomorrow :)\nDetails: {self.package_details()}"
-        )
+        if self.status == Package_status.ACCEPTED:
+            return f"Package: #{self._id}\nETA: tomorrow :)\nDetails: {self.package_details()}"
 
 
 # класа трябва да има __str__ имплементация, защото ще се използва по-горе

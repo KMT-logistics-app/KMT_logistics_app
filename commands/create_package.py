@@ -1,5 +1,6 @@
 from validation_helpers import validate_params_count
 from core.application_data import ApplicationData
+from models.package import Package
 
 
 class CreatePackageCommand:
@@ -9,11 +10,9 @@ class CreatePackageCommand:
         self._app_data = app_data
 
     def execute(self):
-        start_location, delivery_adress, weight, customer_info = self._params
 
-        self._app_data.create_package(
-            start_location, delivery_adress, weight, customer_info
-        )
+        start_location, delivery_adress, weight, customer_info = self._params
+        self._app_data.create_package(start_location, delivery_adress, weight, customer_info)
         # create_package трябва да се напише в application_data и освен, че създава пакета, трябва да го добавя в списъка с пакети
         # в самия Package клас трябв да се сложи counter, който започва от 1, за да може
         #  при създаването на пакети да се инициализира автоматично ID
