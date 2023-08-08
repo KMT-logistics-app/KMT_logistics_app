@@ -2,6 +2,11 @@
 
 # KMT_logistics_app
 
-# Trifon Add
+### Some sample input for testing the application
 
-# This is the documentation of our Logistics app
+```
+createpackage Sydney Melbourne 50 ivan_ivanov ivan@mail.bg
+createroute Alice Springs Adelaide Melbourne Sydney Brisbane 2023/10/03/12/00
+end
+
+```

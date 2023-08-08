@@ -5,6 +5,8 @@ from datetime import datetime
 class CreateRouteCommand:
     def __init__(self, params, app_data: ApplicationData) -> None:
         # validate_params_count(params, 3)
+        if len(params) < 3:
+            raise ValueError("Please enter at least two route points.")
         self._params = params
         self._app_data = app_data
 
