@@ -8,6 +8,7 @@ from commands.view_route import ViewRouteCommand
 from commands.view_truck import ViewTruckCommand
 from commands.create_route import CreateRouteCommand
 from commands.create_truck import CreateTruckCommand
+from commands.view_all_packages import ViewAllPackagesCommand
 
 
 class CommandFactory:
@@ -20,6 +21,8 @@ class CommandFactory:
         if cmd.lower() == "assignpackage":
             # "assignpackage 1 to route 1"
             return AssignPackageCommand(params, self._app_data)
+        if cmd.lower() == "viewallpackages":
+            return ViewAllPackagesCommand(self._app_data)
         if cmd.lower() == "createtruck":
             # "createtruck"
             return CreateTruckCommand(self._app_data)

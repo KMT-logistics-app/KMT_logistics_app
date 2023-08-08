@@ -24,7 +24,7 @@ def try_parse_int(value):
         raise e
 
 
-def ensure_valid_location_name(self, location_name):
+def ensure_valid_location_name(location_name):
     if location_name.capitalize() in Cities.cities:
         return location_name.capitalize()
     raise NameError(f"{location_name} is not a valid city.")
