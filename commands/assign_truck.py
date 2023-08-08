@@ -4,7 +4,7 @@ from core.application_data import ApplicationData
 
 class AssignTruckCommand:
     def __init__(self, params, app_data: ApplicationData) -> None:
-        validate_params_count(params, 4)
+        validate_params_count(params, 2)
         self._params = params
         self._app_data = app_data
 

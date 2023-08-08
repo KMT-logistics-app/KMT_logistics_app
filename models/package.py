@@ -15,8 +15,7 @@ class Package:
         self._contact_info = contact_info # to be modified
         self._id = self.create_id()
         self.status = Package_status.ACCEPTED
-        self._accepted_time = datetime.now().strftime('%Y/%m/%d %H:%M')
-        self._time_loaded = self.time_loaded()
+        self._accepted_time = datetime.now()
         self._expected_delivery_time = self.est_delivery_time()
 
     @property
@@ -60,7 +59,7 @@ class Package:
             if current == self._start_location:
                 for i in range(len(next_city)):
                     if self._end_location == next_city[i][0]:
-                        return self._accepted_time + str(timedelta(hours=next_city[i][1] / 87).days)
+                        return (self._accepted_time + timedelta(hours=next_city[i][1] / 87))
 
     def package_details(self):
         return f"Weight {self.weight}kgs\nAccepted in {self.start_location} at {self._accepted_time}\nStatus: {self.status}"

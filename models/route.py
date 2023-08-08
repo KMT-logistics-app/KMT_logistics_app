@@ -11,11 +11,11 @@ class Route:
 
     def __init__(self, *args) -> None:
         self._id = self.create_id()
-        self.route_points = args[:-1]
+        self.route_points = args[0]
         self._distance = self.calculate_distance(self.route_points)
         self.trucks: list[Truck] = []  # разкоментирано от Трифон
         self.departure_time = args[-1]
-        self._packages = list[Package]  # добавено от Трифон
+        self._packages: list[Package] = [] # добавено от Трифон
 
 
     def packages_weight(self):  # добавено от Трифон
@@ -81,7 +81,6 @@ class Route:
     # не е довършено, но започва да става ясно какво трябва да се направи. Много добре се разбира като се дебъгне с примерния инпут
     def calculate_estimated_time(self, lst):
         eta = self.departure_time
-        print(self.departure_time)
         for city in lst[:-1]:
             for current, next_city in Cities.DISTANCES.items():
                 if current == city:
@@ -89,9 +88,6 @@ class Route:
                     for i in range(len(next_city)):
                         if lst[city_idx + 1] == next_city[i][0]:
                             eta += timedelta(hours=next_city[i][1] / 87)
-                            print(
-                                f'Next stop: {lst[city_idx+1]} {eta.strftime("%Y-%m-%d  %H:%M")}, travel time: {next_city[i][1] / 87:.2f} hours'
-                            )
                             break
                     break
 

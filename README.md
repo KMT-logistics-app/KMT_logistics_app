@@ -5,8 +5,20 @@
 ### Some sample input for testing the application
 
 ```
-createpackage Sydney Melbourne 50 ivan_ivanov ivan@mail.bg
-createroute Alice Springs Adelaide Melbourne Sydney Brisbane 2023/10/03/12/00
+createpackage, Alice Springs, Adelaide, 500, Ivan_Ivanov-ivan@mail.au
+createpackage, Adelaide, Sydney, 500.3, Ivan_Ivanov-ivan@mail.au
+createroute, Sydney, Melbourne, 2023/08/08/16/00
+createroute, adelaide, Sydney, Melbourne, 2023/10/08/16/00
+createroute, alice springs, sydney, brisbane, perth, adelaide, 2030/01/01/10/20
+assigntruck, 1001, 1
+assignpackage, 1, 1
+findroute, Sydney, Melbourne
+viewpackage, 1
+viewroute, 2
+viewroute, 3
+viewtruck, 1011
+viewtruck, 1001
 end
+
 
 ```

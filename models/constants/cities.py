@@ -3,7 +3,7 @@ class Cities:
     SYDNEY = 'Sydney'
     MELBOURNE = 'Melbourne'
     ADELAIDE = 'Adelaide'
-    ALICE_SPRINGS = 'Alice Springs'
+    ALICE_SPRINGS = 'Alice springs'
     BRISBANE = 'Brisbane'
     DARWIN = 'Darwin'
     PERTH = 'Perth'

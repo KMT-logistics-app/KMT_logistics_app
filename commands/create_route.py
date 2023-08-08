@@ -14,8 +14,8 @@ class CreateRouteCommand:
 
     def execute(self):
         route_points = self._params[:-1]
-        for point in route_points:
-            ensure_valid_location_name(point)
+        for point in range(len(route_points)):
+            route_points[point] = ensure_valid_location_name(route_points[point])
         departure_time = self._params[-1]
         year, month, day, hour, minutes = departure_time.split("/")
         parsed_departure = datetime(
