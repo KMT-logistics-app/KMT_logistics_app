@@ -1,4 +1,7 @@
-from commands.validation_helpers import validate_params_count
+from commands.validation_helpers import (
+    validate_params_count,
+    ensure_valid_location_name,
+)
 from core.application_data import ApplicationData
 
 
@@ -10,7 +13,8 @@ class FindRouteCommand:
 
     def execute(self):
         start_location, delivery_adress = self._params
-
+        ensure_valid_location_name(start_location)
+        ensure_valid_location_name(delivery_adress)
         route = self._app_data.find_route_by_locations(start_location, delivery_adress)
         # този метод трябва да се напише в app_data.
         # ако намери път, трябва да върне пътя

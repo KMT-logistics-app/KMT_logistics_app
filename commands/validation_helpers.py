@@ -1,3 +1,6 @@
+from models.constants.cities import Cities
+
+
 def validate_params_count(params, count):
     if len(params) != count:
         raise ValueError(
@@ -11,7 +14,7 @@ def try_parse_float(value):
         return value
     except ValueError as e:
         raise e
-    
+
 
 def try_parse_int(value):
     try:
@@ -19,3 +22,9 @@ def try_parse_int(value):
         return value
     except ValueError as e:
         raise e
+
+
+def ensure_valid_location_name(self, location_name):
+    if location_name.capitalize() in Cities.cities:
+        return location_name.capitalize()
+    raise NameError(f"{location_name} is not a valid city.")
