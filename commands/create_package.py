@@ -10,9 +10,10 @@ from models.package import Package
 class CreatePackageCommand:
     def __init__(self, params, app_data: ApplicationData) -> None:
         validate_params_count(params, 4)
+        print(params)
         self._params = params
         self._app_data = app_data
-
+        # "createpackage Alice Springs, Adelaide, 500, Ivan Ivanov - ivan@mail.au"
         # createpackage sydney Melbourne 50 ivan_ivanov_ivan@mail.bg
 
     def execute(self):
@@ -29,3 +30,4 @@ class CreatePackageCommand:
         # Калоян: weight трябва да опитваме да се парсне към float (14,5кг е валидно тегло) try_parse_float() функция
 
         return f"Package from {contact_info} was created."
+

@@ -1,4 +1,4 @@
-from commands.validation_helpers import validate_params_count
+from commands.validation_helpers import validate_params_count, try_parse_int
 from core.application_data import ApplicationData
 
 
@@ -9,10 +9,10 @@ class ViewRouteCommand:
         self._app_data = app_data
 
     def execute(self):
-        route_id = self._params[0]
+        route_id = try_parse_int(self._params[0])
 
         route = self._app_data.find_route_by_id(route_id)
         # трябва да се напише функция в app_data, която търси и връща пътя по ID
 
-        return f"{route}"
+        return str(route)
         # връща __str__ имплементацията на route
