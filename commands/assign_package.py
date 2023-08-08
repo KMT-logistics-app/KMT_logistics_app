@@ -1,16 +1,16 @@
-from commands.validation_helpers import validate_params_count
+from commands.validation_helpers import validate_params_count, try_parse_int
 from core.application_data import ApplicationData
 
 
 class AssignPackageCommand:
     def __init__(self, params, app_data: ApplicationData):
-        validate_params_count(params, 4)
+        validate_params_count(params, 2)
         self._params = params
         self._app_data = app_data
 
     def execute(self):
-        package_id = self._params[0]
-        route_id = self._params[-1]
+        package_id = try_parse_int(self._params[0])
+        route_id = try_parse_int(self._params[-1])
 
         package = self._app_data.find_package_by_id(package_id)
         route = self._app_data.find_route_by_id(route_id)

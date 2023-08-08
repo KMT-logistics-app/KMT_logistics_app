@@ -18,7 +18,7 @@ class CommandFactory:
         cmd, *params = input_line.split()
 
         if cmd.lower() == "assignpackage":
-            # "assignpackage 501 to route 7"
+            # "assignpackage 1 to route 1"
             return AssignPackageCommand(params, self._app_data)
         if cmd.lower() == "createtruck":
             # "createtruck"

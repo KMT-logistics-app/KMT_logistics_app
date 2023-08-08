@@ -29,7 +29,7 @@ class ApplicationData:
 
     def find_package_by_id(self, pack_id):
         for pack in self._packages:
-            if pack.id == pack_id:
+            if pack._id == pack_id:
                 return pack
 
         return None
@@ -48,7 +48,7 @@ class ApplicationData:
     def find_route_by_locations(self, start_location, delivery_adress):
         for route in self._routes:
             #Да се види дали не трябв да ила стартова локация и крайна в самия клас или точно правилоно съм го разбрал, и е направено чрез пакинг
-            if route.route_points == start_location and route.route_points == delivery_adress:
+            if route.route_points[0] == start_location and route.route_points[-1] == delivery_adress:
                 return route
         raise ValueError("Route not found")
 

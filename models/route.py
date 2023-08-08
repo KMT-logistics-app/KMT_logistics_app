@@ -1,8 +1,8 @@
 # from models.truck import Truck
 from models.constants.cities import Cities
 from datetime import datetime, timedelta
-# from models.package import Package
-# from models.truck import Truck
+from models.package import Package
+from models.truck import Truck
 
 
 class Route:
@@ -12,9 +12,9 @@ class Route:
         self._id = self.create_id()
         self.route_points = args[:-1]
         self._distance = self.calculate_distance(self.route_points)
-        # self.trucks: list[Truck] = []  # разкоментирано от Трифон
+        self.trucks: list[Truck] = []  # разкоментирано от Трифон
         self.departure_time = args[-1]
-        # self._packages = list[Package]  # добавено от Трифон
+        self._packages = list[Package]  # добавено от Трифон
 
 
     def packages_weight(self):  # добавено от Трифон
@@ -38,8 +38,8 @@ class Route:
     def assign_package(self, pack):  # добавено от Трифон
         self._packages.append(pack)
 
-    # def assign_truck(self, truck: Truck):  # разкоментирано от Трифон
-    #     self.trucks.append(truck)
+    def assign_truck(self, truck: Truck):  # разкоментирано от Трифон
+        self.trucks.append(truck)
 
     @property
     def departure_time(self):

@@ -11,3 +11,11 @@ def try_parse_float(value):
         return value
     except ValueError as e:
         raise e
+    
+
+def try_parse_int(value):
+    try:
+        value = int(value)
+        return value
+    except ValueError as e:
+        raise e
