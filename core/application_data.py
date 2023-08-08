@@ -16,13 +16,9 @@ class ApplicationData:
     def create_package(self, start_location, delivery_adress, weight, customer_info):
         new_package = Package(start_location, delivery_adress, weight, customer_info)
         self._packages.append(new_package)
-        # if self.find_package_by_id(new_package.id) is None:
-        #     raise ValueError("Package %s already exists")
-
         return new_package
 
-
-    def create_truck(self):   # добавена от Калоян
+    def create_truck(self):  # добавена от Калоян
         truck = Truck()
         self._trucks.append(truck)
         return truck
@@ -32,12 +28,10 @@ class ApplicationData:
             if pack._id == pack_id:
                 return pack
 
-    
     def find_truck_by_id(self, truck_id):
         for truck in self._trucks:
             if truck.truck_id == truck_id:
                 return truck
-
 
     def create_route(self, route_points, departure_time):
         new_route = Route(route_points, departure_time)
@@ -46,8 +40,11 @@ class ApplicationData:
 
     def find_route_by_locations(self, start_location, delivery_adress):
         for route in self._routes:
-            #Да се види дали не трябв да ила стартова локация и крайна в самия клас или точно правилоно съм го разбрал, и е направено чрез пакинг
-            if route.route_points[0] == start_location and route.route_points[-1] == delivery_adress:
+            # Да се види дали не трябв да ила стартова локация и крайна в самия клас или точно правилоно съм го разбрал, и е направено чрез пакинг
+            if (
+                route.route_points[0] == start_location
+                and route.route_points[-1] == delivery_adress
+            ):
                 return route
         raise ValueError("Route not found")
 
@@ -56,3 +53,28 @@ class ApplicationData:
             if route.route_id == route_id:
                 return route
         return None
+
+    def view_locations(self):
+        towns = {
+            "SYDNEY": [],
+            "MELBOURNE": [],
+            "ADELAIDE": [],
+            "ALICE_SPRINGS": [],
+            "BRISBANE": [],
+            "DARWIN": [],
+            "PERTH": [],
+        }
+        for package in self._packages:
+            if package.current_location.captalize() in towns.keys:
+                towns[package.current_location.captalize()].append(package.weight)
+
+        output = []
+
+        for key, value in towns.items():
+            output.append(f"{key} has packs with weight {sum(value)}kg.")
+
+        return "\n".join(output)
+
+    def view_location(self, location):
+        for package in self._packages:
+            pass

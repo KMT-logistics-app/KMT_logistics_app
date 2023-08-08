@@ -6,4 +6,6 @@ class ViewAllPackagesCommand:
         self._app_data = app_data
 
     def execute(self):
-        pass
+        output = self._app_data.view_all_packages()
+
+        return f"{output}"

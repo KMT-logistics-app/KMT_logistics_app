@@ -8,7 +8,8 @@ from commands.view_route import ViewRouteCommand
 from commands.view_truck import ViewTruckCommand
 from commands.create_route import CreateRouteCommand
 from commands.create_truck import CreateTruckCommand
-from commands.view_all_packages import ViewAllPackagesCommand
+from commands.view_all_packages import ViewAllTownsCommand
+from commands.view_town import ViewLocationCommand
 
 
 class CommandFactory:
@@ -21,8 +22,10 @@ class CommandFactory:
         if cmd.lower() == "assignpackage":
             # "assignpackage 1 to route 1"
             return AssignPackageCommand(params, self._app_data)
-        if cmd.lower() == "viewallpackages":
-            return ViewAllPackagesCommand(self._app_data)
+        if cmd.lower() == "viewalltowns":
+            return ViewAllTownsCommand(self._app_data)
+        if cmd.lower() == "viewlocation Darwin":
+            return ViewLocationCommand(params, self._app_data)
         if cmd.lower() == "createtruck":
             # "createtruck"
             return CreateTruckCommand(self._app_data)
