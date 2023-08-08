@@ -1,6 +1,7 @@
 from models.package import Package
 from models.truck import Truck
 from models.route import Route
+from models.constants.package_status import Package_status
 
 
 class ApplicationData:
@@ -59,22 +60,51 @@ class ApplicationData:
             "SYDNEY": [],
             "MELBOURNE": [],
             "ADELAIDE": [],
-            "ALICE_SPRINGS": [],
+            "ALICE SPRINGS": [],
             "BRISBANE": [],
             "DARWIN": [],
             "PERTH": [],
         }
         for package in self._packages:
-            if package.current_location.captalize() in towns.keys:
-                towns[package.current_location.captalize()].append(package.weight)
+            if package.current_location.upper() in towns.keys:
+                towns[package.current_location.upper()].append(package.weight)
 
         output = []
 
         for key, value in towns.items():
-            output.append(f"{key} has packs with weight {sum(value)}kg.")
+            output.append(
+                f"{key.capitalize()} has packages with total weight {sum(value)}kg."
+            )
 
         return "\n".join(output)
 
     def view_location(self, location):
+        city_packages = []
         for package in self._packages:
-            pass
+            if (
+                package.current_location.upper() == location.upper()
+                and package.status == Package_status.ACCEPTED
+            ):
+                city_packages.append(package)
+
+        towns = {
+            "SYDNEY": [],
+            "MELBOURNE": [],
+            "ADELAIDE": [],
+            "ALICE SPRINGS": [],
+            "BRISBANE": [],
+            "DARWIN": [],
+            "PERTH": [],
+        }
+
+        for package in city_packages:
+            towns[f"{package.end_location.upper()}"].append(package.weight)
+
+        output = [f"{location.captalize()} has packages for these locations:"]
+
+        for key, value in towns.items():
+            output.append(
+                f"{key.capitalize()} has packages with total weight {sum(value)}kg."
+            )
+
+        return "\n".join(output)
