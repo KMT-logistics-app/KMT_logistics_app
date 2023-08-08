@@ -10,7 +10,6 @@ from models.package import Package
 class CreatePackageCommand:
     def __init__(self, params, app_data: ApplicationData) -> None:
         validate_params_count(params, 4)
-        print(params)
         self._params = params
         self._app_data = app_data
         # "createpackage Alice Springs, Adelaide, 500, Ivan Ivanov - ivan@mail.au"
