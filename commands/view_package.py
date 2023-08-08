@@ -1,4 +1,4 @@
-from commands.validation_helpers import validate_params_count
+from commands.validation_helpers import validate_params_count, try_parse_int
 from core.application_data import ApplicationData
 
 
@@ -9,8 +9,8 @@ class ViewPackageCommand:
         self._app_data = app_data
 
     def execute(self):
-        package_id = self._params[0]
+        package_id = try_parse_int(self._params[0])
 
         package = self._app_data.find_package_by_id(package_id)
 
-        return f"{package}"
+        return str(package)

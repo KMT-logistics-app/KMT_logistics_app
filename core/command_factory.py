@@ -37,7 +37,7 @@ class CommandFactory:
             # "findroute Sydney Melbourne"
         if cmd.lower() == "viewpackage":
             return ViewPackageCommand(params, self._app_data)
-            # "viewpackage 501"
+            # "viewpackage 1"
         if cmd.lower() == "viewroute":
             return ViewRouteCommand(params, self._app_data)
             # "viewroute 7"

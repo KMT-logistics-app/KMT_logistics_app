@@ -66,8 +66,7 @@ class Package:
         return f"Weight {self.weight}kgs\nAccepted in {self.start_location} at {self._accepted_time}\nStatus: {self.status}"
 
     def __str__(self) -> str:
-        if self.status == Package_status.ACCEPTED:
-            return f"Package: #{self._id}\nExpected delivery: {self._expected_delivery_time} :)\nDetails: {self.package_details()}"
+        return f"Package: #{self._id}\nExpected delivery time: {self._expected_delivery_time}.\nDetails: {self.package_details()}"
 
 
 # класа трябва да има __str__ имплементация, защото ще се използва по-горе

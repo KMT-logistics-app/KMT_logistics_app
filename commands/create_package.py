@@ -9,6 +9,8 @@ class CreatePackageCommand:
         self._params = params
         self._app_data = app_data
 
+        # createpackage sydney Melbourne 50 ivan_ivanov_ivan@mail.bg
+
     def execute(self):
 
         start_location, delivery_adress, weight, contact_info = self._params

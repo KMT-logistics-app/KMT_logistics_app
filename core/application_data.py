@@ -32,13 +32,12 @@ class ApplicationData:
             if pack._id == pack_id:
                 return pack
 
-        return None
-
+    
     def find_truck_by_id(self, truck_id):
         for truck in self._trucks:
             if truck.truck_id == truck_id:
                 return truck
-        return None
+
 
     def create_route(self, route_points, departure_time):
         new_route = Route(route_points, departure_time)

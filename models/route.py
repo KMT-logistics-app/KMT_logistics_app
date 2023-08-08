@@ -1,6 +1,7 @@
 # from models.truck import Truck
 from models.constants.cities import Cities
 from datetime import datetime, timedelta
+from models.constants.package_status import Package_status
 from models.package import Package
 from models.truck import Truck
 
@@ -35,7 +36,8 @@ class Route:
             return 0
 
 
-    def assign_package(self, pack):  # добавено от Трифон
+    def assign_package(self, pack: Package):
+        pack._status = Package_status.LOADED  # добавено от Трифон
         self._packages.append(pack)
 
     def assign_truck(self, truck: Truck):  # разкоментирано от Трифон
