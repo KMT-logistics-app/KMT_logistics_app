@@ -17,5 +17,7 @@ class FindRouteCommand:
         ensure_valid_location_name(delivery_adress)
         route = self._app_data.find_route_by_locations(start_location, delivery_adress)
 
-        return f"{route}"
-        # тук връща __STR__ имплементацията на пътя
+        if route:
+            return "\n".join(route)
+        else:
+            return "There is no suitable root."
