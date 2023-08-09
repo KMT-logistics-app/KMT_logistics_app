@@ -39,15 +39,25 @@ class ApplicationData:
         self._routes.append(new_route)
         return new_route
 
+
     def find_route_by_locations(self, start_location, delivery_adress):
+        found = []
         for route in self._routes:
-            # Да се види дали не трябв да ила стартова локация и крайна в самия клас или точно правилоно съм го разбрал, и е направено чрез пакинг
             if (
-                route.route_points[0] == start_location
-                and route.route_points[-1] == delivery_adress
-            ):
-                return route
-        raise ValueError("Route not found")
+                start_location in route.route_points and 
+                delivery_adress in route.route_points
+                ):
+                
+                start_idx = route.route_points.index(start_location)
+                if delivery_adress in route.route_points[start_idx:]:
+                    found.append(route)    
+            
+        return found if len(found) > 0 else None
+    
+
+    def calculate_distance(self, A, B):
+        pass
+
 
     def find_route_by_id(self, route_id):
         for route in self._routes:
