@@ -18,6 +18,6 @@ class FindRouteCommand:
         route = self._app_data.find_route_by_locations(start_location, delivery_adress)
 
         if route:
-            return "\n".join(route)
+            return "\n".join(str(rt) for rt in route)
         else:
             return "There is no suitable root."
