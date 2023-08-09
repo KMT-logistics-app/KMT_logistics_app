@@ -18,6 +18,9 @@ class FindRouteCommand:
         route = self._app_data.find_route_by_locations(start_location, delivery_adress)
 
         if route:
-            return "\n".join(str(rt) for rt in route)
+            result = [f'Found {len(route)} routes:']
+            result2 = [str(rt) for rt in route]
+            result.extend(result2)
+            return '\n'.join(result)
         else:
             return "There is no suitable root."
