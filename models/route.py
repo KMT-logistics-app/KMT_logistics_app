@@ -12,7 +12,7 @@ class Route:
     def __init__(self, *args) -> None:
         self._id = self.create_id()
         self.route_points = args[0]
-        self._distance = self.calculate_distance(self.route_points)
+        self._distance = self.total_distance(self.route_points)
         self.trucks: list[Truck] = []  # разкоментирано от Трифон
         self.departure_time = args[-1]
         self._packages: list[Package] = [] # добавено от Трифон
@@ -63,7 +63,7 @@ class Route:
     def distance(self):
         return self._distance
 
-    def calculate_distance(self, lst):
+    def total_distance(self, lst):
         total = 0
 
         for city in lst[:-1]:
