@@ -8,15 +8,19 @@ class Package:
     id_counter = 0
 
     def __init__(self, start_location, end_location, weight, contact_info) -> None:
-
         self.weight: float = weight
         self._start_location: str = start_location
         self._end_location: str = end_location
-        self._contact_info = contact_info # to be modified
+        self._contact_info = contact_info  # to be modified
         self._id = self.create_id()
         self.status = Package_status.ACCEPTED
         self._accepted_time = datetime.now()
-        self._expected_delivery_time = self.est_delivery_time()
+        self._delivery_time_needed = self.time_needed()
+        self.estimated_arrival_time = None
+
+    @property
+    def delivery_time_needed(self):
+        return self._delivery_time_needed
 
     @property
     def weight(self):
@@ -28,7 +32,6 @@ class Package:
             raise ValueError("Package should weigh more than 0.0kgs")
 
         self._weight = value
-
 
     @property
     def start_location(self):
@@ -50,16 +53,16 @@ class Package:
         Package.id_counter += 1
         return Package.id_counter
 
-    def time_loaded(self): # да обсъдим дали има смисъл от този метод
+    def time_loaded(self):  # да обсъдим дали има смисъл от този метод
         self.status = Package_status.LOADED
         return datetime.today()
 
-    def est_delivery_time(self):
+    def time_needed(self):
         for current, next_city in Cities.DISTANCES.items():
             if current == self._start_location:
                 for i in range(len(next_city)):
                     if self._end_location == next_city[i][0]:
-                        return (self._accepted_time + timedelta(hours=next_city[i][1] / 87))
+                        return timedelta(hours=next_city[i][1] / 87)
 
     def package_details(self):
         return f"Weight {self.weight}kgs\nAccepted in {self.start_location} at {self._accepted_time}\nStatus: {self.status}"
@@ -76,4 +79,4 @@ class Package:
 # - end location
 # - contact information for the customer
 # - assigned status
-# - expected delivery time 
+# - expected delivery time
