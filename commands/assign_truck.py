@@ -16,6 +16,5 @@ class AssignTruckCommand:
         route = self._app_data.find_route_by_id(route_id)
 
         route.assign_truck(truck)
-        # трябва да се напише като функция в route
 
         return f"Truck {truck_id} assigned to route {route_id}"
