@@ -21,4 +21,4 @@ class AssignPackageCommand:
             route.assign_package(package)
             return f"Route {route_id} assigned package {package_id}."
         else:
-            return f"Truck's in route {route_id} don't have capacity for this package. You have to assign another vehicle."
+            return f"Truck's in route {route_id} don't have capacity for this package. You have to create another route."

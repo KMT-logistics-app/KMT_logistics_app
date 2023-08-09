@@ -1,7 +1,7 @@
 from models.constants.truck_specs import TruckBrand, TruckStatus, TruckSpecs
 from errors.truck_full import TruckFullError
 from models.package import Package
-# from models.route import Route
+from models.route import Route
 from datetime import datetime
 
 
@@ -12,7 +12,7 @@ class Truck:
         self._truck_id = self.create_id()
         self._brand = self.validate_brand(self._truck_id)
         self._status = TruckStatus.FREE
-        self._route = []
+        self._route = list[Route]
         self._packages: list = []
         self._speed = 87
         self._capacity = self.validate_capacity()
