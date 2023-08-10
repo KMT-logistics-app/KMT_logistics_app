@@ -12,7 +12,7 @@ class CalculateDistanceCommand:
     def execute(self):
 
         point_A, point_B = self._params
-        ensure_valid_location_name(point_A)
-        ensure_valid_location_name(point_B)
-
-        return self._app_data.calculate_distance(point_A, point_B)
+        point_A = ensure_valid_location_name(point_A)
+        point_B = ensure_valid_location_name(point_B)
+        result = self._app_data.calculate_distance(point_A, point_B)
+        return f'{point_A} - {point_B} -> {result[0]}km; approx. travel time: {round(result[1])}hrs'

@@ -121,13 +121,6 @@ class Route:
 
         return total
 
-    def next_stop(self):
-        """
-        Should return the next city, based on the time of day.
-        We can probably get the info for the next stop from the
-        calculate_estimated_time method?
-        """
-        raise NotImplementedError
 
     def __str__(self) -> str:
         new_line = "\n"
@@ -135,12 +128,5 @@ class Route:
         {new_line}  Status: {self.status}\
         {new_line}  Total distance: {self._distance}km\
         {new_line}  Route details: {" -> ".join(self.route_points)}\
-        {new_line}  Packages: {len(self._packages)} with total weight {self.packages_weight()}kgs'
-        # {new_line}  Next stop {self.next_stop()}'
-
-
-# route = ["Alice Springs", "Adelaide", "Melbourne", "Sydney", "Brisbane"]
-# new_route = Route(route)
-
-# print(str(new_route))
-# hours = new_route.calculate_estimated_time(route)
+        {new_line}  Packages: {len(self._packages)} with total weight {self.packages_weight()}kgs\
+        {new_line}  Truck assigned: {str(self.truck) if self.truck else None}'

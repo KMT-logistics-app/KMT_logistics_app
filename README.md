@@ -32,5 +32,6 @@ viewlocation, alice springs
 viewlocations
 findpendingpackages
 findfreetrucksbylocation, Sydney
+calculatedistance, sydney, melbourne
 end
 ```
