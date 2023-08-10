@@ -19,6 +19,14 @@ class Package:
         self.estimated_arrival_time = None
 
     @property
+    def status(self):
+        if self.estimated_arrival_time == None:
+            return Package_status.ACCEPTED
+        if datetime.now() > self.estimated_arrival_time:
+            return Package_status.DELIVERED
+        return Package_status.LOADED
+
+    @property
     def delivery_time_needed(self):
         return self._delivery_time_needed
 

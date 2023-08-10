@@ -4,6 +4,7 @@ from models.route import Route
 from models.constants.package_status import Package_status
 from models.constants.cities import Cities
 
+
 class ApplicationData:
     def __init__(self):
         self._trucks: list[Truck] = []
@@ -13,17 +14,25 @@ class ApplicationData:
     @property
     def packages(self):
         return tuple(self._packages)
-    
 
     @property
     def trucks(self):
         return self._trucks
-    
 
     @property
     def routes(self):
         return self._routes
 
+    def find_free_truck_by_location(self, location: str):
+        trucks = []
+        for truck in self._trucks:
+            if truck.status == "free" and truck.location == location:
+                trucks.append(truck)
+
+        if len(trucks) == 0:
+            return f"No free trucks in {location}"
+
+        return trucks
 
     def create_package(self, start_location, delivery_adress, weight, customer_info):
         new_package = Package(start_location, delivery_adress, weight, customer_info)
@@ -35,22 +44,17 @@ class ApplicationData:
         self._trucks.append(truck)
         return truck
 
-
     def create_route(self, route_points, departure_time):
         new_route = Route(route_points, departure_time)
         self._routes.append(new_route)
         return new_route
-    
-    
-    def calculate_distance(self, A, B) -> int:   
+
+    def calculate_distance(self, A, B) -> int:
         for current, next_city in Cities.DISTANCES.items():
             if current == A:
                 for i in range(len(next_city)):
                     if B == next_city[i][0]:
-                        
                         return next_city[i][1]
-      
-
 
     def find_package_by_id(self, pack_id):
         for pack in self._packages:
@@ -62,44 +66,40 @@ class ApplicationData:
             if truck.truck_id == truck_id:
                 return truck
 
-
     def find_route_by_locations(self, start_location, delivery_adress):
         found = []
         for route in self._routes:
             if (
-                start_location in route.route_points and 
-                delivery_adress in route.route_points
-                ):
-                
+                start_location in route.route_points
+                and delivery_adress in route.route_points
+            ):
                 start_idx = route.route_points.index(start_location)
                 if delivery_adress in route.route_points[start_idx:]:
-                    found.append(route)    
-            
+                    found.append(route)
+
         return found if len(found) > 0 else None
-    
 
     def find_route_by_id(self, route_id):
         for route in self._routes:
             if route.route_id == route_id:
                 return route
         return None
-    
 
     def view_routes_in_progress(self):
-        '''
-            Only a menager should be able to perform this task!
-        '''
+        """
+        Only a menager should be able to perform this task!
+        """
         temp_result = []
         for route in self._routes:
             if route.status == Route.IN_PROGRESS:
-                temp_result. append(route)
+                temp_result.append(route)
 
         result_to_return = []
         for r in temp_result:
             result_to_return.append(str(r))
 
-        return '\n'.join(result_to_return)
-        
+        return "\n".join(result_to_return)
+
     # def view_locations(self):
     #     towns = {
     #         "SYDNEY": [],

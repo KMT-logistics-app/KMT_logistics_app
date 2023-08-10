@@ -12,11 +12,57 @@ class Truck:
         self._truck_id = self.create_id()
         self._brand = self.validate_brand(self._truck_id)
         self._status = TruckStatus.FREE
-        self._route = list[Route]
+        self._routes = list[Route]
         self._packages: list = []
         self._speed = 87
         self._capacity = self.validate_capacity()
         self._range = self.validate_range()
+
+    @property
+    def location(self):
+        if self.status == "free":
+            for index in range(len(self._routes)):
+                if (
+                    self._routes[index].finish_time <= datetime.now
+                    and self._routes[index + 1] > datetime.now
+                ):
+                    return self._routes[index].route_points.split(" -> ")[-1]
+
+    @property
+    def status(self):
+        for intervals in self.free_intervals():
+            if intervals[0] <= datetime.now <= intervals[1]:
+                return TruckStatus.FREE
+
+        return TruckStatus.BUSY
+
+    @property
+    def free_intervals(self):
+        courses = len(self._routes)
+        if courses == 0:
+            return [[datetime.min, datetime.max]]
+        if courses == 1:
+            return [
+                [datetime.min, self._routes[0].departure_time],
+                [self._routes[0].finish_time, datetime.max],
+            ]
+
+        intervals = []
+
+        for course in range(courses):
+            if course == 0:
+                intervals.append([datetime.min, self._routes[course].departure_time])
+                continue
+            intervals.append(
+                [
+                    self._routes[course - 1].finish_time,
+                    self._routes[course].departure_time,
+                ]
+            )
+            if course == courses - 1:
+                intervals.append([self._routes[course].finish_time, datetime.max])
+
+        return intervals
 
     @property
     def brand(self):
@@ -58,10 +104,10 @@ class Truck:
         package.time_loaded(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
         if self.capacity_left() == 0:
-            self._status = TruckStatus.FULL
+            self._status = TruckStatus.BUSY
 
     def unload_package(self, package: Package):
-        if self._status == TruckStatus.FULL:
+        if self._status == TruckStatus.BUSY:
             self._packages.remove(package)
             package.time_delivered(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
             self._status = TruckStatus.FREE
