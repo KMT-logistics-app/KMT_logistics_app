@@ -30,5 +30,6 @@ createroute, alice springs, adelaide, Sydney, 2024/01/08/16/00
 assigntruck, 1011, 1
 viewlocation, alice springs
 viewlocations
+findpendingpackages
 end
 ```

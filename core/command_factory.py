@@ -5,6 +5,7 @@ from commands.create_package import CreatePackageCommand
 from commands.create_route import CreateRouteCommand
 from commands.find_route import FindRouteCommand
 from commands.view_package import ViewPackageCommand
+from commands.view_pending_packages import ViewPendingPackagesCommand
 from commands.view_route import ViewRouteCommand
 from commands.view_truck import ViewTruckCommand
 from commands.create_route import CreateRouteCommand
@@ -55,6 +56,6 @@ class CommandFactory:
             # viewtruck, 1011
             return ViewTruckCommand(params, self._app_data)
         if cmd.lower() == "findpendingpackages":
-            return ViewTruckCommand(self._app_data)
+            return ViewPendingPackagesCommand(self._app_data)
 
         raise ValueError(f"Invalid command: {cmd}")
