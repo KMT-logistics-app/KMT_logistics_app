@@ -54,5 +54,8 @@ class CommandFactory:
         if cmd.lower() == "viewtruck":
             # viewtruck, 1011
             return ViewTruckCommand(params, self._app_data)
+        if cmd.lower() == "findpendingpackages":
+            return ViewTruckCommand(self._app_data)
+        
 
         raise ValueError(f"Invalid command: {cmd}")
