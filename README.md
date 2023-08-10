@@ -2,8 +2,37 @@
 
 # KMT_logistics_app
 
-### Some sample input for testing the application
 
+# Как се работи с приложението:
+```
+1. Служителят приема пратката и я създава
+2. Проверява дали има подходящ маршрут за нея
+3. Ако има я добавя към него
+4. Ако няма, търси свободен камион чрез find_free_trucks_by_location на база стартовата локация на пратката
+5. Ако камионът не е в същия град се изчисляват километрите и времето чрез calculate_distance
+6. Създава се маршрут на база получената информация от справките
+7. Към маршрута се добавя подходящ камион на база справките по-горе
+8. Към маршрута се добавят пратки
+9. Ако капацитетът на маршрута в даден момент не позволява да се добавят пратки се създава нов такъв
+Налични команди:
+- view_truck - показва информация за камион, търсен по ID
+- view_route - показва информация за път
+- view_pending_packages - показва информация за пратки, които не са добавени към маршрут
+- view_package - показва информация за пратка, търсена по ID
+- view_locations - показва информация за броя на пратките по локации
+- view_location - показва информация за показва броя пратките в локацията и техните дестинации
+- find_route - търси/показва информация за маршрут с начална и крайна точка
+- find_free_trucks_by_location - търси/показва свободни камиони в определена локация
+- crate_truck - създава всички камиони
+- create_route - създава маршрут
+- create_package - създава пратка
+- calculate_distance - изчислява дистанцията и времето за път м/у 2 локации
+- assign_truck - добавя камион към ROUTE
+- assign_package - добавя партка към ROUTE
+
+```
+
+# Test case #1
 ```
 createpackage, Alice Springs, Adelaide, 500, Ivan_Ivanov-ivan@mail.au
 createpackage, Adelaide, Sydney, 500.3, Ivan_Ivanov-ivan@mail.au
@@ -20,7 +49,10 @@ viewroute, 3
 viewtruck, 1011
 viewtruck, 1001
 end
+```
 
+# Test case #2
+```
 createpackage, Alice Springs, Adelaide, 500, Ivan_Ivanov-ivan@mail.au
 createpackage, Alice Springs, Adelaide, 300.50, Ivan_Ivanov-ivan@mail.au
 createpackage, Adelaide, Sydney, 500.3, Ivan_Ivanov-ivan@mail.au
