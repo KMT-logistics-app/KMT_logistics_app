@@ -7,7 +7,7 @@ from core.application_data import ApplicationData
 
 class ViewLocationCommand:
     def __init__(self, params, app_data: ApplicationData) -> None:
-        validate_params_count(1, params)
+        validate_params_count(params, 1)
         self._params = params
         self._app_data = app_data
 

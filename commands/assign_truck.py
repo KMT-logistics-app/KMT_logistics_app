@@ -13,7 +13,6 @@ class AssignTruckCommand:
         route_id = try_parse_int(self._params[-1])
 
         truck = self._app_data.find_truck_by_id(truck_id)
-        # find free truck command
         route = self._app_data.find_route_by_id(route_id)
 
         route.assign_truck(truck)

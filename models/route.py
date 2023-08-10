@@ -16,7 +16,7 @@ class Route:
         self.departure_time = args[-1]
         self._id = self.create_id()
         self._distance = self.total_distance(self.route_points)
-        self.trucks: list[Truck] = []
+        self.truck: Truck = None
         self._packages: list[Package] = []
         self._status = self.PENDING
 
@@ -66,7 +66,7 @@ class Route:
         self._packages.append(pack)
 
     def assign_truck(self, truck: Truck):
-        self.trucks.append(truck)
+        self.truck = truck
 
     def calculate_estimated_time(self):
         """
@@ -98,11 +98,8 @@ class Route:
             weight_sum += package.weight
         return weight_sum
 
-    def trucks_capacity(self):
-        all_trucks_capacity = 0
-        for truck in self.trucks:
-            all_trucks_capacity += truck.capacity
-        result = all_trucks_capacity - self.packages_weight()
+    def truck_capacity(self):
+        result = self.truck.capacity - self.packages_weight()
         if result > 0:
             return result
         else:

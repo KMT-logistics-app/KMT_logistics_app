@@ -13,8 +13,6 @@ class Truck:
         self._brand = self.validate_brand(self._truck_id)
         self._status = TruckStatus.FREE
         self._routes = []
-        self._packages: list = []
-        self._speed = 87
         self._capacity = self.validate_capacity()
         self._range = self.validate_range()
 
@@ -74,14 +72,6 @@ class Truck:
     def truck_id(self):
         return self._truck_id
 
-    # @property
-    # def route(self):
-    #     return tuple(self._route)
-
-    @property
-    def packages(self):
-        return tuple(self._packages)
-
     @property
     def capacity(self):
         return self._capacity
@@ -98,24 +88,24 @@ class Truck:
     #     total_packages_weight = sum(package.weight for package in self.packages)
     #     return (self._capacity - total_packages_weight)
 
-    def load_package(self, package: Package):
-        if self.capacity_left() < package.weight:
-            raise TruckFullError
+    # def load_package(self, package: Package):
+    #     if self.capacity_left() < package.weight:
+    #         raise TruckFullError
 
-        self._packages.append(package)
-        package.time_loaded(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    #     self._packages.append(package)
+    #     package.time_loaded(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
-        if self.capacity_left() == 0:
-            self._status = TruckStatus.BUSY
+    #     if self.capacity_left() == 0:
+    #         self._status = TruckStatus.BUSY
 
-    def unload_package(self, package: Package):
-        if self._status == TruckStatus.BUSY:
-            self._packages.remove(package)
-            package.time_delivered(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-            self._status = TruckStatus.FREE
-        else:
-            self._packages.remove(package)
-            package.time_delivered(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    # def unload_package(self, package: Package):
+    #     if self._status == TruckStatus.BUSY:
+    #         self._packages.remove(package)
+    #         package.time_delivered(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    #         self._status = TruckStatus.FREE
+    #     else:
+    #         self._packages.remove(package)
+    #         package.time_delivered(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
     def validate_brand(self, current_id):
         if current_id < 1011:
@@ -148,6 +138,4 @@ class Truck:
             return TruckSpecs.MAX_RANGE_ACTROSS
 
     def __str__(self) -> str:
-        return (
-            f"Brand: {self.brand}\nId: {self.truck_id}\nPackages: {len(self.packages)}"
-        )
+        return f"Brand: {self.brand}\nId: {self.truck_id}"

@@ -12,11 +12,17 @@ class Package:
         self._start_location: str = start_location
         self._end_location: str = end_location
         self._contact_info = contact_info  # to be modified
+        self.route = None
         self._id = self.create_id()
         self.status = Package_status.ACCEPTED
         self._accepted_time = datetime.now()
         self._delivery_time_needed = self.time_needed()
         self.estimated_arrival_time = None
+
+    @property
+    def location(self):
+        if self.route == None or self.route.departure_time < datetime.now():
+            return self._start_location
 
     @property
     def status(self):
