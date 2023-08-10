@@ -100,56 +100,49 @@ class ApplicationData:
 
         return "\n".join(result_to_return)
 
-    # def view_locations(self):
-    #     towns = {
-    #         "SYDNEY": [],
-    #         "MELBOURNE": [],
-    #         "ADELAIDE": [],
-    #         "ALICE SPRINGS": [],
-    #         "BRISBANE": [],
-    #         "DARWIN": [],
-    #         "PERTH": [],
-    #     }
-    #     for package in self._packages:
-    #         if package.current_location in Cities.cities:
-    #             towns[package.current_location.upper()].append(package.weight)
-
-    #     output = []
-
-    #     for key, value in towns.items():
-    #         output.append(
-    #             f"{key.capitalize()} has packages with total weight {sum(value)}kg."
-    #         )
-
-    #     return "\n".join(output)
-
-    def view_location(self, location):
-        city_packages = []
-        for package in self._packages:
-            if (
-                package.location == location.upper()
-                and package.status == Package_status.ACCEPTED
-            ):
-                city_packages.append(package)
-
+    def view_locations(self):
         towns = {
-            "SYDNEY": [],
-            "MELBOURNE": [],
-            "ADELAIDE": [],
-            "ALICE SPRINGS": [],
-            "BRISBANE": [],
-            "DARWIN": [],
-            "PERTH": [],
+            "Sydney": [],
+            "Melbourne": [],
+            "Adelaide": [],
+            "Alice springs": [],
+            "Brisbane": [],
+            "Darwin": [],
+            "Perth": [],
         }
+        for package in self._packages:
+            if package.location in Cities.cities:
+                towns[package.location].append(package.weight)
 
-        for package in city_packages:
-            towns[f"{package.end_location.upper()}"].append(package.weight)
-
-        output = [f"{location.capitalize()} has packages for these locations:"]
+        output = []
 
         for key, value in towns.items():
             output.append(
                 f"{key.capitalize()} has packages with total weight {sum(value)}kg."
             )
+
+        return "\n".join(output)
+
+    def view_location(self, location):
+        city_packages = []
+        for package in self._packages:
+            if (
+                package.location == location
+                and package.status == Package_status.ACCEPTED
+            ):
+                city_packages.append(package)
+
+        towns = {}
+
+        for package in city_packages:
+            if package.end_location not in towns:
+                towns[f"{package.end_location}"] = package.weight
+                continue
+            towns[f"{package.end_location}"] += package.weight
+
+        output = [f"{location} has packages for these locations:"]
+
+        for key, value in towns.items():
+            output.append(f"{key} with total weight {value}kg.")
 
         return "\n".join(output)

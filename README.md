@@ -21,5 +21,14 @@ viewtruck, 1011
 viewtruck, 1001
 end
 
-
+createpackage, Alice Springs, Adelaide, 500, Ivan_Ivanov-ivan@mail.au
+createpackage, Alice Springs, Adelaide, 300.50, Ivan_Ivanov-ivan@mail.au
+createpackage, Adelaide, Sydney, 500.3, Ivan_Ivanov-ivan@mail.au
+createpackage, Darwin, Adelaide, 300.50, Ivan_Ivanov-ivan@mail.au
+createpackage, Sydney, Adelaide, 200.50, Ivan_Ivanov-ivan@mail.au
+createroute, alice springs, adelaide, Sydney, 2024/01/08/16/00
+assigntruck, 1011, 1
+viewlocation, alice springs
+viewlocations
+end
 ```

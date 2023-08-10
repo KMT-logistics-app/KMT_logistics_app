@@ -62,7 +62,7 @@ class Route:
         return self._distance
 
     def assign_package(self, pack: Package):
-        pack._status = Package_status.LOADED
+        pack._status = Package_status.ASSIGNED
         self._packages.append(pack)
 
     def assign_truck(self, truck: Truck):

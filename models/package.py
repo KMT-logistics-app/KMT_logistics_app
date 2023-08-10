@@ -28,8 +28,10 @@ class Package:
     def status(self):
         if self.estimated_arrival_time == None:
             return Package_status.ACCEPTED
-        if datetime.now() > self.estimated_arrival_time:
+        if self.route != None and datetime.now() > self.estimated_arrival_time:
             return Package_status.DELIVERED
+        if self.route != None and datetime.now() < self.route.departure_time:
+            return Package_status.ASSIGNED
         return Package_status.LOADED
 
     @property
