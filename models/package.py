@@ -14,7 +14,7 @@ class Package:
         self._contact_info = contact_info  # to be modified
         self.route = None
         self._id = self.create_id()
-        self.status = Package_status.ACCEPTED
+        self._status = Package_status.ACCEPTED
         self._accepted_time = datetime.now()
         self._delivery_time_needed = self.time_needed()
         self.estimated_arrival_time = None

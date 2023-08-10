@@ -28,7 +28,7 @@ class Truck:
 
     @property
     def status(self):
-        for intervals in self.free_intervals():
+        for intervals in self.free_intervals:
             if intervals[0] <= datetime.now() <= intervals[1]:
                 return TruckStatus.FREE
 
@@ -38,18 +38,18 @@ class Truck:
     def free_intervals(self):
         courses = len(self._routes)
         if courses == 0:
-            return [[datetime.min(), datetime.max()]]
+            return [[datetime.min, datetime.max]]
         if courses == 1:
             return [
-                [datetime.min(), self._routes[0].departure_time],
-                [self._routes[0].calculate_estimated_time(), datetime.max()],
+                [datetime.min, self._routes[0].departure_time],
+                [self._routes[0].calculate_estimated_time(), datetime.max],
             ]
 
         intervals = []
 
         for course in range(courses):
             if course == 0:
-                intervals.append([datetime.min(), self._routes[course].departure_time])
+                intervals.append([datetime.min, self._routes[course].departure_time])
                 continue
             intervals.append(
                 [
@@ -59,7 +59,7 @@ class Truck:
             )
             if course == courses - 1:
                 intervals.append(
-                    [self._routes[course].calculate_estimated_time(), datetime.max()]
+                    [self._routes[course].calculate_estimated_time(), datetime.max]
                 )
 
         return intervals
@@ -138,4 +138,8 @@ class Truck:
             return TruckSpecs.MAX_RANGE_ACTROSS
 
     def __str__(self) -> str:
-        return f"Brand: {self.brand}\nId: {self.truck_id}"
+        availability = ""
+        for interval in self.free_intervals:
+            availability += f"From {interval[0]} to {interval[1]}\n"
+
+        return f"Id: {self.truck_id}\nBrand: {self.brand}\nCapacity: {self._capacity}\nRange: {self._range}\nStatus: {self.status}\nAvailability: \n{availability.strip()}"
