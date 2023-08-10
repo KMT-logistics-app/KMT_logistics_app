@@ -31,5 +31,6 @@ assigntruck, 1011, 1
 viewlocation, alice springs
 viewlocations
 findpendingpackages
+findfreetrucksbylocation, Sydney
 end
 ```

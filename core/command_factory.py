@@ -59,7 +59,7 @@ class CommandFactory:
         if cmd.lower() == "findpendingpackages":
             return ViewPendingPackagesCommand(self._app_data)
         if cmd.lower() == "findfreetrucksbylocation":
-            # findfreetruckbylocation, Sydney
+            # findfreetrucksbylocation, Sydney
             return FindFreeTrucksByLocationCommand(params, self._app_data)
 
         raise ValueError(f"Invalid command: {cmd}")
