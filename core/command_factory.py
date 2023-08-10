@@ -12,6 +12,7 @@ from commands.create_route import CreateRouteCommand
 from commands.create_truck import CreateTruckCommand
 from commands.view_locations import ViewLocationsCommand
 from commands.view_location import ViewLocationCommand
+from commands.find_free_trucks_by_location import FindFreeTrucksByLocationCommand
 
 
 class CommandFactory:
@@ -57,5 +58,8 @@ class CommandFactory:
             return ViewTruckCommand(params, self._app_data)
         if cmd.lower() == "findpendingpackages":
             return ViewPendingPackagesCommand(self._app_data)
+        if cmd.lower() == "findfreetrucksbylocation":
+            # findfreetruckbylocation, Sydney
+            return FindFreeTrucksByLocationCommand(params, self._app_data)
 
         raise ValueError(f"Invalid command: {cmd}")

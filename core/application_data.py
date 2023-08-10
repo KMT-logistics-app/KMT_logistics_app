@@ -23,7 +23,7 @@ class ApplicationData:
     def routes(self):
         return self._routes
 
-    def find_free_truck_by_location(self, location: str):
+    def find_free_trucks_by_location(self, location: str):
         trucks = []
         for truck in self._trucks:
             if truck.status == "free" and truck.location == location:

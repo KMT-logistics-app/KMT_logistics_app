@@ -14,4 +14,3 @@ class ViewTruckCommand:
         truck = self._app_data.find_truck_by_id(truck_id)
 
         return str(truck)
-        # връща __str__ имплементацията на truck
