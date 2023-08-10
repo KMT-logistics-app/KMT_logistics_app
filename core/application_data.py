@@ -35,6 +35,23 @@ class ApplicationData:
         self._trucks.append(truck)
         return truck
 
+
+    def create_route(self, route_points, departure_time):
+        new_route = Route(route_points, departure_time)
+        self._routes.append(new_route)
+        return new_route
+    
+    
+    def calculate_distance(self, A, B) -> int:   
+        for current, next_city in Cities.DISTANCES.items():
+            if current == A:
+                for i in range(len(next_city)):
+                    if B == next_city[i][0]:
+                        
+                        return next_city[i][1]
+      
+
+
     def find_package_by_id(self, pack_id):
         for pack in self._packages:
             if pack._id == pack_id:
@@ -44,11 +61,6 @@ class ApplicationData:
         for truck in self._trucks:
             if truck.truck_id == truck_id:
                 return truck
-
-    def create_route(self, route_points, departure_time):
-        new_route = Route(route_points, departure_time)
-        self._routes.append(new_route)
-        return new_route
 
 
     def find_route_by_locations(self, start_location, delivery_adress):
@@ -66,21 +78,28 @@ class ApplicationData:
         return found if len(found) > 0 else None
     
 
-    def calculate_distance(self, A, B) -> int:   
-        for current, next_city in Cities.DISTANCES.items():
-            if current == A:
-                for i in range(len(next_city)):
-                    if B == next_city[i][0]:
-                        
-                        return next_city[i][1]
-      
-
     def find_route_by_id(self, route_id):
         for route in self._routes:
             if route.route_id == route_id:
                 return route
         return None
+    
 
+    def view_routes_in_progress(self):
+        '''
+            Only a menager should be able to perform this task!
+        '''
+        temp_result = []
+        for route in self._routes:
+            if route.status == Route.IN_PROGRESS:
+                temp_result. append(route)
+
+        result_to_return = []
+        for r in temp_result:
+            result_to_return.append(str(r))
+
+        return '\n'.join(result_to_return)
+        
     # def view_locations(self):
     #     towns = {
     #         "SYDNEY": [],

@@ -58,7 +58,42 @@ class Route:
     @property
     def distance(self):
         return self._distance
-    
+
+
+    def assign_package(self, pack: Package):
+        pack._status = Package_status.LOADED
+        self._packages.append(pack)
+
+
+    def assign_truck(self, truck: Truck):
+        self.trucks.append(truck)
+
+
+    def calculate_estimated_time(self, lst):
+        '''
+            Currently this method returns the estimated time of arrival 
+            between the starting point and the final point of the route.
+            Probably it should give information about the eta between the 
+            route's points so we can use the info in the next_stop method?
+        '''
+        eta = self.departure_time
+        for city in lst[:-1]:
+            for current, next_city in Cities.DISTANCES.items():
+                if current == city:
+                    city_idx = lst.index(city)
+                    for i in range(len(next_city)):
+                        if lst[city_idx + 1] == next_city[i][0]:
+                            eta += timedelta(hours=next_city[i][1] / 87)
+                            break
+                    break
+
+        return eta
+
+
+    def create_id(self):
+        Route.ROUTE_ID += 1
+        return Route.ROUTE_ID
+
 
     def packages_weight(self):
         weight_sum = 0
@@ -78,15 +113,6 @@ class Route:
             return 0
 
 
-    def assign_package(self, pack: Package):
-        pack._status = Package_status.LOADED
-        self._packages.append(pack)
-
-
-    def assign_truck(self, truck: Truck):
-        self.trucks.append(truck)
-
-
     def total_distance(self, lst):
         total = 0
 
@@ -101,35 +127,24 @@ class Route:
                     break
 
         return total
+    
 
-
-    def calculate_estimated_time(self, lst):
+    def next_stop(self):
         '''
-        Currently this method returns the estimated time of arrival 
-        between the starting point and the final point of the route.
+            Should return the next city, based on the time of day. 
+            We can probably get the info for the next stop from the 
+            calculate_estimated_time method?
         '''
-        eta = self.departure_time
-        for city in lst[:-1]:
-            for current, next_city in Cities.DISTANCES.items():
-                if current == city:
-                    city_idx = lst.index(city)
-                    for i in range(len(next_city)):
-                        if lst[city_idx + 1] == next_city[i][0]:
-                            eta += timedelta(hours=next_city[i][1] / 87)
-                            break
-                    break
+        raise NotImplementedError
 
-        return eta
-
-    def create_id(self):
-        Route.ROUTE_ID += 1
-        return Route.ROUTE_ID
 
     def __str__(self) -> str:
         new_line = "\n"
         return f'Route ID: {self._id}\
         {new_line}  Total distance: {self._distance}km\
-        {new_line}  Route details: {" -> ".join(self.route_points)}'
+        {new_line}  Route details: {" -> ".join(self.route_points)}\
+        {new_line}  Packages: {len(self._packages)} with total weight {self.packages_weight()}kgs\
+        {new_line}  Next stop {self.next_stop()}'
 
 # route = ["Alice Springs", "Adelaide", "Melbourne", "Sydney", "Brisbane"]
 # new_route = Route(route)
