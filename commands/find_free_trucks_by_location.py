@@ -16,8 +16,8 @@ class FindFreeTrucksByLocationCommand:
         if len(trucks) == None:
             return f"No free trucks at {location}"
 
-        output = ""
+        output = []
         for truck in trucks:
-            output += "\n".join(str(truck))
+            output.append(str(truck))
 
-        return output
+        return "\n".join(output)

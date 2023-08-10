@@ -18,13 +18,16 @@ class Truck:
 
     @property
     def location(self):
+        if len(self._routes) == 0:
+            return "Sydney"
         if self.status == "free":
             for index in range(len(self._routes)):
                 if (
-                    self._routes[index].finish_time <= datetime.now()
+                    self._routes[index].calculate_estimated_time() <= datetime.now()
                     and self._routes[index + 1].departure_time > datetime.now()
                 ):
                     return self._routes[index].route_points.split(" -> ")[-1]
+        return "On the road"
 
     @property
     def status(self):
@@ -142,4 +145,4 @@ class Truck:
         for interval in self.free_intervals:
             availability += f"From {interval[0]} to {interval[1]}\n"
 
-        return f"Id: {self.truck_id}\nBrand: {self.brand}\nCapacity: {self._capacity}\nRange: {self._range}\nStatus: {self.status}\nAvailability: \n{availability.strip()}"
+        return f"Id: {self.truck_id}\nLocation: {self.location}\nBrand: {self.brand}\nCapacity: {self._capacity}\nRange: {self._range}\nStatus: {self.status}\nAvailability: \n{availability.strip()}"
