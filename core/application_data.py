@@ -13,13 +13,24 @@ class ApplicationData:
     @property
     def packages(self):
         return tuple(self._packages)
+    
+
+    @property
+    def trucks(self):
+        return self._trucks
+    
+
+    @property
+    def routes(self):
+        return self._routes
+
 
     def create_package(self, start_location, delivery_adress, weight, customer_info):
         new_package = Package(start_location, delivery_adress, weight, customer_info)
         self._packages.append(new_package)
         return new_package
 
-    def create_truck(self):  # добавена от Калоян
+    def create_truck(self):
         truck = Truck()
         self._trucks.append(truck)
         return truck
