@@ -2,7 +2,7 @@ from models.package import Package
 from models.truck import Truck
 from models.route import Route
 from models.constants.package_status import Package_status
-
+from models.constants.cities import Cities
 
 class ApplicationData:
     def __init__(self):
@@ -55,9 +55,14 @@ class ApplicationData:
         return found if len(found) > 0 else None
     
 
-    def calculate_distance(self, A, B):
-        pass
-
+    def calculate_distance(self, A, B) -> int:   
+        for current, next_city in Cities.DISTANCES.items():
+            if current == A:
+                for i in range(len(next_city)):
+                    if B == next_city[i][0]:
+                        
+                        return next_city[i][1]
+      
 
     def find_route_by_id(self, route_id):
         for route in self._routes:
@@ -65,56 +70,56 @@ class ApplicationData:
                 return route
         return None
 
-    def view_locations(self):
-        towns = {
-            "SYDNEY": [],
-            "MELBOURNE": [],
-            "ADELAIDE": [],
-            "ALICE SPRINGS": [],
-            "BRISBANE": [],
-            "DARWIN": [],
-            "PERTH": [],
-        }
-        for package in self._packages:
-            if package.current_location.upper() in towns.keys:
-                towns[package.current_location.upper()].append(package.weight)
+    # def view_locations(self):
+    #     towns = {
+    #         "SYDNEY": [],
+    #         "MELBOURNE": [],
+    #         "ADELAIDE": [],
+    #         "ALICE SPRINGS": [],
+    #         "BRISBANE": [],
+    #         "DARWIN": [],
+    #         "PERTH": [],
+    #     }
+    #     for package in self._packages:
+    #         if package.current_location in Cities.cities:
+    #             towns[package.current_location.upper()].append(package.weight)
 
-        output = []
+    #     output = []
 
-        for key, value in towns.items():
-            output.append(
-                f"{key.capitalize()} has packages with total weight {sum(value)}kg."
-            )
+    #     for key, value in towns.items():
+    #         output.append(
+    #             f"{key.capitalize()} has packages with total weight {sum(value)}kg."
+    #         )
 
-        return "\n".join(output)
+    #     return "\n".join(output)
 
-    def view_location(self, location):
-        city_packages = []
-        for package in self._packages:
-            if (
-                package.current_location.upper() == location.upper()
-                and package.status == Package_status.ACCEPTED
-            ):
-                city_packages.append(package)
+    # def view_location(self, location):
+    #     city_packages = []
+    #     for package in self._packages:
+    #         if (
+    #             package.current_location.upper() == location.upper()
+    #             and package.status == Package_status.ACCEPTED
+    #         ):
+    #             city_packages.append(package)
 
-        towns = {
-            "SYDNEY": [],
-            "MELBOURNE": [],
-            "ADELAIDE": [],
-            "ALICE SPRINGS": [],
-            "BRISBANE": [],
-            "DARWIN": [],
-            "PERTH": [],
-        }
+    #     towns = {
+    #         "SYDNEY": [],
+    #         "MELBOURNE": [],
+    #         "ADELAIDE": [],
+    #         "ALICE SPRINGS": [],
+    #         "BRISBANE": [],
+    #         "DARWIN": [],
+    #         "PERTH": [],
+    #     }
 
-        for package in city_packages:
-            towns[f"{package.end_location.upper()}"].append(package.weight)
+    #     for package in city_packages:
+    #         towns[f"{package.end_location.upper()}"].append(package.weight)
 
-        output = [f"{location.captalize()} has packages for these locations:"]
+    #     output = [f"{location.captalize()} has packages for these locations:"]
 
-        for key, value in towns.items():
-            output.append(
-                f"{key.capitalize()} has packages with total weight {sum(value)}kg."
-            )
+    #     for key, value in towns.items():
+    #         output.append(
+    #             f"{key.capitalize()} has packages with total weight {sum(value)}kg."
+    #         )
 
-        return "\n".join(output)
+    #     return "\n".join(output)

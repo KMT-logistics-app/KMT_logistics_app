@@ -14,4 +14,4 @@ class ViewLocationCommand:
     def execute(self):
         location = ensure_valid_location_name(self._params[0])
 
-        return location
+        return self._app_data.view_location(location)
