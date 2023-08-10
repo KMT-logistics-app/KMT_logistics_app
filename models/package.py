@@ -57,14 +57,6 @@ class Package:
     def end_location(self):
         return self._end_location
 
-    @property
-    def status(self):
-        return self._status
-
-    @status.setter
-    def status(self, value):
-        self._status = value
-
     def create_id(self):
         Package.id_counter += 1
         return Package.id_counter

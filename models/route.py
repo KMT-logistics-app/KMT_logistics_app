@@ -63,6 +63,7 @@ class Route:
 
     def assign_package(self, pack: Package):
         pack._status = Package_status.ASSIGNED
+        pack.estimated_arrival_time = self.calculate_estimated_time()
         self._packages.append(pack)
 
     def assign_truck(self, truck: Truck):
