@@ -7,7 +7,8 @@
 ```
 createpackage, Alice Springs, Adelaide, 500, Ivan_Ivanov-ivan@mail.au
 createpackage, Adelaide, Sydney, 500.3, Ivan_Ivanov-ivan@mail.au
-createroute, Sydney, Melbourne, 2023/08/08/16/00
+createroute, alice springs, adelaide, Sydney, 2023/01/08/16/00
+createroute, alice springs, adelaide, Sydney, 2024/01/08/16/00
 createroute, adelaide, Sydney, Melbourne, 2023/10/08/16/00
 createroute, alice springs, sydney, brisbane, perth, adelaide, 2030/01/01/10/20
 assigntruck, 1001, 1

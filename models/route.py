@@ -8,13 +8,19 @@ from models.truck import Truck
 class Route:
     ROUTE_ID = 0
     IN_PROGRESS = 'in progress'
+    PENDING = 'pending'
 
     def __init__(self, *args) -> None:
         self.route_points = args[0]
         self.departure_time = args[-1]
         self._id = self.create_id()
         self._distance = self.total_distance(self.route_points)
-        self.status = None
+
+        if self._departure_time < datetime.now():
+            self._status = self.IN_PROGRESS
+        else:
+            self._status = self.PENDING
+        
         self.trucks: list[Truck] = []
         self._packages: list[Package] = []
 
@@ -43,12 +49,12 @@ class Route:
     def status(self):
         return self._status
 
-    @status.setter
-    def status(self):
-        if self._departure_time < datetime.now():
-            self._status = self.IN_PROGRESS
-        else:
-            self._status = None
+    # @status.setter
+    # def status(self):
+    #     if self._departure_time < datetime.now():
+    #         self._status = self.IN_PROGRESS
+    #     else:
+    #         self._status = self.PENDING
 
 
     @property
