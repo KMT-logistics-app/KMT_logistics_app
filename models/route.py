@@ -7,32 +7,26 @@ from models.truck import Truck
 
 class Route:
     ROUTE_ID = 0
-    IN_PROGRESS = 'in progress'
-    PENDING = 'pending'
+    IN_PROGRESS = "in progress"
+    PENDING = "pending"
+    FINISHED = "finished"
 
     def __init__(self, *args) -> None:
         self.route_points = args[0]
         self.departure_time = args[-1]
         self._id = self.create_id()
         self._distance = self.total_distance(self.route_points)
-
-        if self._departure_time < datetime.now():
-            self._status = self.IN_PROGRESS
-        else:
-            self._status = self.PENDING
-        
         self.trucks: list[Truck] = []
         self._packages: list[Package] = []
-
+        self._status = self.PENDING
 
     @property
     def route_points(self):
         return self._route_points
-    
+
     @route_points.setter
     def route_points(self, value):
         self._route_points = value
-
 
     @property
     def departure_time(self):
@@ -44,10 +38,13 @@ class Route:
             raise TypeError
         self._departure_time = value
 
-
     @property
     def status(self):
-        return self._status
+        if datetime.now() > self.calculate_estimated_time():
+            return self.FINISHED
+        if datetime.now() < self._departure_time:
+            return self.PENDING
+        return self.IN_PROGRESS
 
     # @status.setter
     # def status(self):
@@ -55,7 +52,6 @@ class Route:
     #         self._status = self.IN_PROGRESS
     #     else:
     #         self._status = self.PENDING
-
 
     @property
     def route_id(self):
@@ -65,48 +61,42 @@ class Route:
     def distance(self):
         return self._distance
 
-
     def assign_package(self, pack: Package):
         pack._status = Package_status.LOADED
         self._packages.append(pack)
 
-
     def assign_truck(self, truck: Truck):
         self.trucks.append(truck)
 
-
-    def calculate_estimated_time(self, lst):
-        '''
-            Currently this method returns the estimated time of arrival 
-            between the starting point and the final point of the route.
-            Probably it should give information about the eta between the 
-            route's points so we can use the info in the next_stop method?
-        '''
+    def calculate_estimated_time(self):
+        """
+        Currently this method returns the estimated time of arrival
+        between the starting point and the final point of the route.
+        Probably it should give information about the eta between the
+        route's points so we can use the info in the next_stop method?
+        """
         eta = self.departure_time
-        for city in lst[:-1]:
+        for city in self.route_points[:-1]:
             for current, next_city in Cities.DISTANCES.items():
                 if current == city:
-                    city_idx = lst.index(city)
+                    city_idx = self._route_points.index(city)
                     for i in range(len(next_city)):
-                        if lst[city_idx + 1] == next_city[i][0]:
+                        if self.route_points[city_idx + 1] == next_city[i][0]:
                             eta += timedelta(hours=next_city[i][1] / 87)
                             break
                     break
 
         return eta
 
-
     def create_id(self):
         Route.ROUTE_ID += 1
         return Route.ROUTE_ID
-
 
     def packages_weight(self):
         weight_sum = 0
         for package in self._packages:
             weight_sum += package.weight
         return weight_sum
-
 
     def trucks_capacity(self):
         all_trucks_capacity = 0
@@ -117,7 +107,6 @@ class Route:
             return result
         else:
             return 0
-
 
     def total_distance(self, lst):
         total = 0
@@ -133,24 +122,24 @@ class Route:
                     break
 
         return total
-    
 
     def next_stop(self):
-        '''
-            Should return the next city, based on the time of day. 
-            We can probably get the info for the next stop from the 
-            calculate_estimated_time method?
-        '''
+        """
+        Should return the next city, based on the time of day.
+        We can probably get the info for the next stop from the
+        calculate_estimated_time method?
+        """
         raise NotImplementedError
-
 
     def __str__(self) -> str:
         new_line = "\n"
         return f'Route ID: {self._id}\
+        {new_line}  Status: {self.status}\
         {new_line}  Total distance: {self._distance}km\
         {new_line}  Route details: {" -> ".join(self.route_points)}\
-        {new_line}  Packages: {len(self._packages)} with total weight {self.packages_weight()}kgs\
-        {new_line}  Next stop {self.next_stop()}'
+        {new_line}  Packages: {len(self._packages)} with total weight {self.packages_weight()}kgs'
+        # {new_line}  Next stop {self.next_stop()}'
+
 
 # route = ["Alice Springs", "Adelaide", "Melbourne", "Sydney", "Brisbane"]
 # new_route = Route(route)

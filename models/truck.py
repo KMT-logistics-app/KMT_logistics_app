@@ -1,7 +1,7 @@
 from models.constants.truck_specs import TruckBrand, TruckStatus, TruckSpecs
 from errors.truck_full import TruckFullError
 from models.package import Package
-from models.route import Route
+
 from datetime import datetime
 
 
@@ -12,7 +12,7 @@ class Truck:
         self._truck_id = self.create_id()
         self._brand = self.validate_brand(self._truck_id)
         self._status = TruckStatus.FREE
-        self._routes = list[Route]
+        self._routes = []
         self._packages: list = []
         self._speed = 87
         self._capacity = self.validate_capacity()
@@ -23,15 +23,15 @@ class Truck:
         if self.status == "free":
             for index in range(len(self._routes)):
                 if (
-                    self._routes[index].finish_time <= datetime.now
-                    and self._routes[index + 1] > datetime.now
+                    self._routes[index].finish_time <= datetime.now()
+                    and self._routes[index + 1].departure_time > datetime.now()
                 ):
                     return self._routes[index].route_points.split(" -> ")[-1]
 
     @property
     def status(self):
         for intervals in self.free_intervals():
-            if intervals[0] <= datetime.now <= intervals[1]:
+            if intervals[0] <= datetime.now() <= intervals[1]:
                 return TruckStatus.FREE
 
         return TruckStatus.BUSY
@@ -40,27 +40,29 @@ class Truck:
     def free_intervals(self):
         courses = len(self._routes)
         if courses == 0:
-            return [[datetime.min, datetime.max]]
+            return [[datetime.min(), datetime.max()]]
         if courses == 1:
             return [
-                [datetime.min, self._routes[0].departure_time],
-                [self._routes[0].finish_time, datetime.max],
+                [datetime.min(), self._routes[0].departure_time],
+                [self._routes[0].calculate_estimated_time(), datetime.max()],
             ]
 
         intervals = []
 
         for course in range(courses):
             if course == 0:
-                intervals.append([datetime.min, self._routes[course].departure_time])
+                intervals.append([datetime.min(), self._routes[course].departure_time])
                 continue
             intervals.append(
                 [
-                    self._routes[course - 1].finish_time,
+                    self._routes[course - 1].calculate_estimated_time(),
                     self._routes[course].departure_time,
                 ]
             )
             if course == courses - 1:
-                intervals.append([self._routes[course].finish_time, datetime.max])
+                intervals.append(
+                    [self._routes[course].calculate_estimated_time(), datetime.max()]
+                )
 
         return intervals
 
