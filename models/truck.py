@@ -1,7 +1,4 @@
 from models.constants.truck_specs import TruckBrand, TruckStatus, TruckSpecs
-from errors.truck_full import TruckFullError
-from models.package import Package
-
 from datetime import datetime
 
 
@@ -82,33 +79,14 @@ class Truck:
     @property
     def range(self):
         return self._range
+    
+    @property
+    def routes(self):
+        return tuple(self._routes)
 
     def create_id(self):
         Truck.TRUCK_ID += 1
         return Truck.TRUCK_ID
-
-    # def capacity_left(self): закоментирано от Трифон, защото май няма да ни трябва
-    #     total_packages_weight = sum(package.weight for package in self.packages)
-    #     return (self._capacity - total_packages_weight)
-
-    # def load_package(self, package: Package):
-    #     if self.capacity_left() < package.weight:
-    #         raise TruckFullError
-
-    #     self._packages.append(package)
-    #     package.time_loaded(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-
-    #     if self.capacity_left() == 0:
-    #         self._status = TruckStatus.BUSY
-
-    # def unload_package(self, package: Package):
-    #     if self._status == TruckStatus.BUSY:
-    #         self._packages.remove(package)
-    #         package.time_delivered(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    #         self._status = TruckStatus.FREE
-    #     else:
-    #         self._packages.remove(package)
-    #         package.time_delivered(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
     def validate_brand(self, current_id):
         if current_id < 1011:

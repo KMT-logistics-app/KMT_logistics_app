@@ -1,6 +1,5 @@
 from models.constants.package_status import Package_status
 from models.constants.cities import Cities
-from models.customer import Customer
 from datetime import datetime, timedelta
 
 
@@ -61,10 +60,6 @@ class Package:
         Package.id_counter += 1
         return Package.id_counter
 
-    def time_loaded(self):  # да обсъдим дали има смисъл от този метод
-        self.status = Package_status.LOADED
-        return datetime.today()
-
     def time_needed(self):
         for current, next_city in Cities.DISTANCES.items():
             if current == self._start_location:
@@ -73,18 +68,11 @@ class Package:
                         return timedelta(hours=next_city[i][1] / 87)
 
     def package_details(self):
-        return f"Weight {self.weight}kgs\nAccepted in {self.start_location} at {self._accepted_time}\nStatus: {self.status}"
+        return f"  Weight {self.weight}kgs\
+            \n  Accepted in {self.start_location}: {self._accepted_time.strftime('%Y/%m/%d, %H:%M')}\
+            \n  Status: {self.status}"
 
     def __str__(self) -> str:
-        return f"Package: #{self._id}\nExpected delivery time: {self.estimated_arrival_time}.\nDetails: {self.package_details()}"
-
-
-# класа трябва да има __str__ имплементация, защото ще се използва по-горе
-
-# - ID
-# - weight(kg)
-# - start location
-# - end location
-# - contact information for the customer
-# - assigned status
-# - expected delivery time
+        return f"Package: #{self._id}\
+        \n  Expected delivery time: {self.estimated_arrival_time}.\
+        \n  Details: {self.package_details()}"

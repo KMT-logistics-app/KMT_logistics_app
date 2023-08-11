@@ -1,3 +1,4 @@
+from models.customer import Customer
 from models.package import Package
 from models.truck import Truck
 from models.route import Route
@@ -10,6 +11,7 @@ class ApplicationData:
         self._trucks: list[Truck] = []
         self._packages: list[Package] = []
         self._routes: list[Route] = []
+        self._customers: list[Customer] = []
 
     @property
     def packages(self):
@@ -17,22 +19,20 @@ class ApplicationData:
 
     @property
     def trucks(self):
-        return self._trucks
+        return tuple(self._trucks)
 
     @property
     def routes(self):
-        return self._routes
+        return tuple(self._routes)
 
-    def find_free_trucks_by_location(self, location: str):
-        trucks = []
-        for truck in self._trucks:
-            if truck.status == "free" and truck.location == location:
-                trucks.append(truck)
+    @property
+    def customers(self):
+        return tuple(self._customers)
 
-        if len(trucks) == 0:
-            return f"No free trucks in {location}"
-
-        return trucks
+    def create_customer(self, f_name, l_name, email):
+        new_customer = Customer(f_name, l_name, email)
+        self._customers.append(new_customer)
+        return new_customer
 
     def create_package(self, start_location, delivery_adress, weight, customer_info):
         new_package = Package(start_location, delivery_adress, weight, customer_info)
@@ -61,6 +61,17 @@ class ApplicationData:
         for pack in self._packages:
             if pack._id == pack_id:
                 return pack
+          
+    def find_free_trucks_by_location(self, location: str):
+        trucks = []
+        for truck in self._trucks:
+            if truck.status == "free" and truck.location == location:
+                trucks.append(truck)
+
+        if len(trucks) == 0:
+            return f"No free trucks in {location}"
+
+        return trucks
 
     def find_truck_by_id(self, truck_id):
         for truck in self._trucks:
@@ -86,9 +97,15 @@ class ApplicationData:
                 return route
         return None
 
+    def find_customer_by_email(self, mail):
+        for person in self._customers:
+            if person._email == mail:
+                return True
+        return False
+
     def view_routes_in_progress(self):
         """
-        Only a menager should be able to perform this task!
+        Only a manager should be able to perform this task!
         """
         temp_result = []
         for route in self._routes:

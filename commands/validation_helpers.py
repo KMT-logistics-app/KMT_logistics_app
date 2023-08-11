@@ -24,7 +24,15 @@ def try_parse_int(value):
         raise e
 
 
-def ensure_valid_location_name(location_name):
+def ensure_valid_location_name(location_name: str):
     if location_name.capitalize() in Cities.cities:
         return location_name.capitalize()
     raise NameError(f"{location_name} is not a valid city.")
+
+
+def create_customer_info(info: str):
+    # Ivan_Ivanov-ivan@mail.au
+    contact_info = info.split('-')
+    first_name, last_name = contact_info[0].split('_')
+    email = contact_info[1]
+    return first_name, last_name, email

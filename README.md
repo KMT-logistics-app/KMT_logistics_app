@@ -32,7 +32,7 @@
 
 ```
 
-# Test case #1
+# Test case #1 - valid input examples
 ```
 createpackage, Alice Springs, Adelaide, 500, Ivan_Ivanov-ivan@mail.au
 createpackage, Adelaide, Sydney, 500.3, Ivan_Ivanov-ivan@mail.au
@@ -51,12 +51,12 @@ viewtruck, 1001
 end
 ```
 
-# Test case #2
+# Test case #2 - valid input examples
 ```
-createpackage, Alice Springs, Adelaide, 500, Ivan_Ivanov-ivan@mail.au
+createpackage, Alice Springs, Adelaide, 500, Ivan_Ivanov-ivan@mail.au 
 createpackage, Alice Springs, Adelaide, 300.50, Ivan_Ivanov-ivan@mail.au
 createpackage, Adelaide, Sydney, 500.3, Ivan_Ivanov-ivan@mail.au
-createpackage, Darwin, Adelaide, 300.50, Ivan_Ivanov-ivan@mail.au
+createpackage, Darwin, Adelaide, 300.50, Petar_Ivanov-pepi@mail.bg
 createpackage, Sydney, Adelaide, 200.50, Ivan_Ivanov-ivan@mail.au
 createroute, alice springs, adelaide, Sydney, 2024/01/08/16/00
 assigntruck, 1011, 1
@@ -66,4 +66,16 @@ findpendingpackages
 findfreetrucksbylocation, Sydney
 calculatedistance, sydney, melbourne
 end
+```
+
+# Invalid input examples
+```
+createpackage Alice Springs Adelaide 500 Ivan_Ivanov-ivan@mail.au              -> no commas between the values
+createpackage, 500, Alice Springs, Adelaide, Ivan_Ivanov-ivan@mail.au          -> invalid place for package's weight
+createpackage, Alice Springs, Adelaide, 500, Ivan_Ivanov-ivanail.au            -> invalid email address - no '@' symbol
+createpack, Alice Springs, Adelaide, 500, Ivan_Ivanov-ivan@ail.au              -> invalid command name
+createpackage, Alice Springs, Adelaide, 500, I_Ivanov-ivan@ail.au              -> invalid customer first name
+createpackage, Alice Springs, Adelaide, 500, Ivan_Ivanov-iv@l.au               -> invalid email - too short
+
+
 ```

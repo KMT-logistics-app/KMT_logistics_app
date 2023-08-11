@@ -2,9 +2,11 @@ from commands.validation_helpers import (
     validate_params_count,
     try_parse_float,
     ensure_valid_location_name,
+    create_customer_info
+
 )
 from core.application_data import ApplicationData
-from models.package import Package
+from models.customer import Customer
 
 
 class CreatePackageCommand:
@@ -12,21 +14,29 @@ class CreatePackageCommand:
         validate_params_count(params, 4)
         self._params = params
         self._app_data = app_data
-        # "createpackage Alice Springs, Adelaide, 500, Ivan Ivanov - ivan@mail.au"
-        # createpackage sydney Melbourne 50 ivan_ivanov_ivan@mail.bg
+        
+        # createpackage, Alice Springs, Adelaide, 500, Ivan_Ivanov-ivan@mail.au
+        # createpackage, Adelaide, Sydney, 500.3, Ivan_Ivanov-ivan@mail.au
 
     def execute(self):
+        # package info
         start_location, delivery_adress, weight, contact_info = self._params
         start_location = ensure_valid_location_name(start_location)
         delivery_adress = ensure_valid_location_name(delivery_adress)
         weight = try_parse_float(weight)
-        self._app_data.create_package(
+        # customer info
+        first_name, last_name, email = create_customer_info(contact_info) 
+        customer = Customer(first_name, last_name, email)
+        # if customer is created properly, we can create the package
+        package = self._app_data.create_package(
             start_location, delivery_adress, weight, contact_info
         )
-        # create_package трябва да се напише в application_data и освен, че създава пакета, трябва да го добавя в списъка с пакети
-        # в самия Package клас трябв да се сложи counter, който започва от 1, за да може
-        #  при създаването на пакети да се инициализира автоматично ID
-        # Калоян: weight трябва да опитваме да се парсне към float (14,5кг е валидно тегло) try_parse_float() функция
-
-        return f"Package from {contact_info} was created."
+        # add the customer to the app_data customers list and add the package to the customer
+        if not self._app_data.find_customer_by_email(email):
+            self._app_data._customers.append(customer)
+            customer.add_package(package)
+        else:
+            customer.add_package(package)
+        
+        return f"Package from {first_name} {last_name} was created."
 

@@ -46,13 +46,7 @@ class Route:
             return self.PENDING
         return self.IN_PROGRESS
 
-    # @status.setter
-    # def status(self):
-    #     if self._departure_time < datetime.now():
-    #         self._status = self.IN_PROGRESS
-    #     else:
-    #         self._status = self.PENDING
-
+    
     @property
     def route_id(self):
         return self._id
@@ -60,6 +54,10 @@ class Route:
     @property
     def distance(self):
         return self._distance
+    
+    @property
+    def packages(self):
+        return tuple(self._packages)
 
     def assign_package(self, pack: Package):
         pack._status = Package_status.ASSIGNED
@@ -70,13 +68,8 @@ class Route:
         self.truck = truck
 
     def calculate_estimated_time(self):
-        """
-        Currently this method returns the estimated time of arrival
-        between the starting point and the final point of the route.
-        Probably it should give information about the eta between the
-        route's points so we can use the info in the next_stop method?
-        """
         eta = self.departure_time
+        
         for city in self.route_points[:-1]:
             for current, next_city in Cities.DISTANCES.items():
                 if current == city:
@@ -120,7 +113,6 @@ class Route:
                     break
 
         return total
-
 
     def __str__(self) -> str:
         new_line = "\n"
