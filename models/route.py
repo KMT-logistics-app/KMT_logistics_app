@@ -68,7 +68,7 @@ class Route:
         self.truck = truck
 
     def calculate_estimated_time(self):
-        eta = self.departure_time
+        estimated_arrival_time = self.departure_time
         
         for city in self.route_points[:-1]:
             for current, next_city in Cities.DISTANCES.items():
@@ -76,11 +76,11 @@ class Route:
                     city_idx = self._route_points.index(city)
                     for i in range(len(next_city)):
                         if self.route_points[city_idx + 1] == next_city[i][0]:
-                            eta += timedelta(hours=next_city[i][1] / 87)
+                            estimated_arrival_time += timedelta(hours=next_city[i][1] / 87)
                             break
                     break
 
-        return eta
+        return estimated_arrival_time
 
     def create_id(self):
         Route.ROUTE_ID += 1
@@ -99,15 +99,15 @@ class Route:
         else:
             return 0
 
-    def total_distance(self, lst):
+    def total_distance(self, route_points: list):
         total = 0
 
-        for city in lst[:-1]:
+        for city in route_points[:-1]:
             for current, next_city in Cities.DISTANCES.items():
                 if current == city:
-                    city_idx = lst.index(city)
+                    city_idx = route_points.index(city)
                     for i in range(len(next_city)):
-                        if lst[city_idx + 1] == next_city[i][0]:
+                        if route_points[city_idx + 1] == next_city[i][0]:
                             total += next_city[i][1]
                             break
                     break

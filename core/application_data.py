@@ -55,7 +55,7 @@ class ApplicationData:
                 for i in range(len(next_city)):
                     if B == next_city[i][0]:
                         distance = next_city[i][1]
-                        return (distance, (distance/87))
+                        return distance
 
     def find_package_by_id(self, pack_id):
         for pack in self._packages:

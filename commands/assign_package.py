@@ -14,12 +14,10 @@ class AssignPackageCommand:
 
         package = self._app_data.find_package_by_id(package_id)
         route = self._app_data.find_route_by_id(route_id)
-        # двете функции трябва да се добавят в app_data
-        # трябва да връщат обект от съответните класове(package, route) и да връща грешка, ако не намира такива
-
+       
         if route.truck_capacity() >= package.weight:
             route.assign_package(package)
             package.route = route
             return f"Route {route_id} assigned package {package_id}."
         else:
-            return f"Truck's in route {route_id} don't have capacity for this package. You have to create another route."
+            return f"The truck in route {route_id} don't have capacity for this package. You have to create another route."

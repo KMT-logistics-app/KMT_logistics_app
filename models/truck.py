@@ -9,7 +9,7 @@ class Truck:
         self._truck_id = self.create_id()
         self._brand = self.validate_brand(self._truck_id)
         self._status = TruckStatus.FREE
-        self._routes = []
+        self._routes: list = []
         self._capacity = self.validate_capacity()
         self._range = self.validate_range()
 

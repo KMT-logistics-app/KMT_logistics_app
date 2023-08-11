@@ -29,7 +29,7 @@ class CreatePackageCommand:
         customer = Customer(first_name, last_name, email)
         # if customer is created properly, we can create the package
         package = self._app_data.create_package(
-            start_location, delivery_adress, weight, contact_info
+            start_location, delivery_adress, weight, customer
         )
         # add the customer to the app_data customers list and add the package to the customer
         if not self._app_data.find_customer_by_email(email):
