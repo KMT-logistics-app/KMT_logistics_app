@@ -123,4 +123,14 @@ class Truck:
         for interval in self.free_intervals:
             availability += f"From {interval[0]} to {interval[1]}\n"
 
-        return f"Id: {self.truck_id}\nLocation: {self.location}\nBrand: {self.brand}\nCapacity: {self._capacity}\nRange: {self._range}\nStatus: {self.status}\nAvailability: \n{availability.strip()}"
+        if len(self._routes) == 1:
+            current_capacity = self._capacity - self._routes[0].packages_weight()
+        else:
+            current_capacity = self._capacity
+        return f"Truck ID: {self.truck_id}.\
+            \n  Location: {self.location}.\
+            \n  Brand: {self.brand}.\
+            \n  Capacity: {current_capacity}kg.\
+            \n  Range: {self._range}km.\
+            \n  Status: {self.status}.\
+            \n  Availability: \n{availability.strip()}"

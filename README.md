@@ -23,12 +23,12 @@
 - view_location - показва информация за показва броя пратките в локацията и техните дестинации
 - find_route - търси/показва информация за маршрут с начална и крайна точка
 - find_free_trucks_by_location - търси/показва свободни камиони в определена локация
-- crate_truck - създава всички камиони
+- crate_truck - създава камион (при стартиране на програмата автоматично се създават 40 камиона)
 - create_route - създава маршрут
 - create_package - създава пратка
 - calculate_distance - изчислява дистанцията и времето за път м/у 2 локации
 - assign_truck - добавя камион към ROUTE
-- assign_package - добавя партка към ROUTE
+- assign_package - добавя пратка към ROUTE
 
 ```
 
@@ -62,7 +62,7 @@ createroute, alice springs, adelaide, Sydney, 2024/01/08/16/00
 assigntruck, 1011, 1
 viewlocation, alice springs
 viewlocations
-findpendingpackages
+viewpendingpackages
 findfreetrucksbylocation, Sydney
 calculatedistance, sydney, melbourne
 end
@@ -79,3 +79,25 @@ createpackage, Alice Springs, Adelaide, 500, Ivan_Ivanov-iv@l.au               -
 
 
 ```
+createpackage, Alice Springs, Adelaide, 500, Ivan_Ivanov-ivan@mail.au 
+createpackage, Alice Springs, Adelaide, 300.50, Ivan_Ivanov-ivan@mail.au
+createpackage, Adelaide, Sydney, 500.3, Ivan_Ivanov-ivan@mail.au
+createpackage, Darwin, Adelaide, 300.50, Petar_Ivanov-pepi@mail.bg
+createpackage, Sydney, Adelaide, 200.50, Ivan_Ivanov-ivan@mail.au
+viewpendingpackages
+viewlocations
+findfreetrucksbylocation, melbourne
+createroute, alice springs, adelaide, sydney, darwin, 2023/08/10/18/00
+assigntruck, 1030, 1
+assignpackage, 1, 1
+assignpackage, 2, 1
+assignpackage, 3, 1
+assignpackage, 1, 1
+viewpendingpackages
+viewlocations
+viewtruck, 1030
+viewtruck, 1031
+viewroute, 1
+viewpackage, 1
+assigntruck, 1030, 1
+end

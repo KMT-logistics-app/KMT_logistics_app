@@ -14,15 +14,16 @@ class CreateRouteCommand:
 
     def execute(self):
         route_points = self._params[:-1]
+
         for point in range(len(route_points)):
             route_points[point] = ensure_valid_location_name(route_points[point])
+        
         departure_time = self._params[-1]
         year, month, day, hour, minutes = departure_time.split("/")
         parsed_departure = datetime(
             int(year), int(month), int(day), int(hour), int(minutes)
         )
+        
         new_route = self._app_data.create_route(route_points, parsed_departure)
-        # метода трябва да се разпише в app_data, kaто този метод
-        # трябва да създава Route(start_point, delivery_adress) самия клас Route трябва да генерира уникално ID
-        # и да включва час тръгване и час пристигане
+        
         return f"Delivery route {new_route._id} was created."

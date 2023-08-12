@@ -13,7 +13,7 @@ class FindFreeTrucksByLocationCommand:
         location = self._params[0]
         trucks = self._app_data.find_free_trucks_by_location(location)
 
-        if len(trucks) == None:
+        if trucks == None:
             return f"No free trucks at {location}"
 
         output = []

@@ -56,7 +56,7 @@ class CommandFactory:
         if cmd.lower() == "viewtruck":
             # viewtruck, 1011
             return ViewTruckCommand(params, self._app_data)
-        if cmd.lower() == "findpendingpackages":
+        if cmd.lower() == "viewpendingpackages":
             return ViewPendingPackagesCommand(self._app_data)
         if cmd.lower() == "findfreetrucksbylocation":
             # findfreetrucksbylocation, Sydney

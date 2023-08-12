@@ -1,5 +1,6 @@
 from commands.validation_helpers import validate_params_count, try_parse_int
 from core.application_data import ApplicationData
+from models.constants.truck_specs import TruckStatus
 
 
 class AssignTruckCommand:
@@ -15,6 +16,9 @@ class AssignTruckCommand:
         truck = self._app_data.find_truck_by_id(truck_id)
         route = self._app_data.find_route_by_id(route_id)
 
+        if truck._status == TruckStatus.BUSY:
+            return f'Truck {truck_id} already assigned.'
+        
         route.assign_truck(truck)
         truck._routes.append(route)
 

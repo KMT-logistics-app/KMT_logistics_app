@@ -1,5 +1,6 @@
 from commands.validation_helpers import validate_params_count, try_parse_int
 from core.application_data import ApplicationData
+from models.constants.package_status import Package_status
 
 
 class AssignPackageCommand:
@@ -14,10 +15,13 @@ class AssignPackageCommand:
 
         package = self._app_data.find_package_by_id(package_id)
         route = self._app_data.find_route_by_id(route_id)
-       
+        
+        if package._status == Package_status.ASSIGNED:
+            return f'Package {package_id} already assigned.'
+
         if route.truck_capacity() >= package.weight:
             route.assign_package(package)
             package.route = route
-            return f"Route {route_id} assigned package {package_id}."
+            return f"Package {package_id} was assigned to route {route_id}."
         else:
             return f"The truck in route {route_id} don't have capacity for this package. You have to create another route."

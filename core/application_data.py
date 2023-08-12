@@ -69,7 +69,7 @@ class ApplicationData:
                 trucks.append(truck)
 
         if len(trucks) == 0:
-            return f"No free trucks in {location}"
+            return None
 
         return trucks
 

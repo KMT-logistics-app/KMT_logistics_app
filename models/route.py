@@ -121,4 +121,4 @@ class Route:
         {new_line}  Total distance: {self._distance}km\
         {new_line}  Route details: {" -> ".join(self.route_points)}\
         {new_line}  Packages: {len(self._packages)} with total weight {self.packages_weight()}kgs\
-        {new_line}  Truck assigned: {str(self.truck) if self.truck else None}'
+        {new_line}  Truck assigned: {new_line}{str(self.truck) if self.truck else None}'
