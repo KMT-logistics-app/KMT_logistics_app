@@ -55,13 +55,14 @@ class ApplicationData:
                 for i in range(len(next_city)):
                     if B == next_city[i][0]:
                         distance = next_city[i][1]
-                        return (distance, (distance/87))
+                        time = distance / 87
+                        return (distance, time)
 
     def find_package_by_id(self, pack_id):
         for pack in self._packages:
             if pack._id == pack_id:
                 return pack
-          
+
     def find_free_trucks_by_location(self, location: str):
         trucks = []
         for truck in self._trucks:
@@ -99,7 +100,9 @@ class ApplicationData:
 
     def get_accepted_packages(self):
         """Трябва да връща пратките със статус accepted"""
-        accepted_packages = filter(lambda x: x.Package_status == 'accepted', self._packages)
+        accepted_packages = filter(
+            lambda x: x.Package_status == "accepted", self._packages
+        )
         return list(accepted_packages)
 
     def find_customer_by_email(self, mail):

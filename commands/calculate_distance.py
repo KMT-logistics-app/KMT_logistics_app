@@ -1,5 +1,9 @@
-from commands.validation_helpers import validate_params_count, ensure_valid_location_name
+from commands.validation_helpers import (
+    validate_params_count,
+    ensure_valid_location_name,
+)
 from core.application_data import ApplicationData
+from math import floor
 
 
 class CalculateDistanceCommand:
@@ -8,11 +12,11 @@ class CalculateDistanceCommand:
         self._params = params
         self._app_data = app_data
 
-
     def execute(self):
-
         point_A, point_B = self._params
         point_A = ensure_valid_location_name(point_A)
         point_B = ensure_valid_location_name(point_B)
-        result = self._app_data.calculate_distance(point_A, point_B)
-        return f'{point_A} - {point_B} -> {result}km; approx. travel time: {round(result/87)}hrs'
+        distance, hours = self._app_data.calculate_distance(point_A, point_B)
+        minutes = int((hours - int(hours)) * 60)
+
+        return f"{point_A} - {point_B} -> {distance}km; approx. travel time: {floor(hours)}hours and {minutes} minutes."
