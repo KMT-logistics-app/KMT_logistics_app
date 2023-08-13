@@ -23,10 +23,13 @@ class ViewPackageCommand:
     def leave_feedback(self, result):
         if isinstance(result, str):
             return f'{result}\
-                    \nWhat??? I won\'t use your services any more!\
-                    \nYou lost my package along the way!!!'
+                    \n***Customer left negative feedback:\
+                    \n  "What??? You lost my package along the way?!\
+                    \n  I won\'t use your services any more!"'
         else:
-            customer_name = result._contact_info.last_name
+            first_name = result._contact_info.first_name
+            last_name = result._contact_info.last_name
             return f'{str(result)}\
-                   \n{customer_name}: Thank you very much! You are the best logistics company :)'
+                    \n***Customer {first_name} {last_name} feedback:\
+                    \n  "Thank you very much! You are the best logistics company :)"'
     

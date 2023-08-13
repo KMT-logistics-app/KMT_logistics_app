@@ -32,7 +32,10 @@ def ensure_valid_location_name(location_name: str):
 
 def create_customer_info(info: str):
     # Ivan_Ivanov-ivan@mail.au
-    contact_info = info.split('-')
-    first_name, last_name = contact_info[0].split('_')
-    email = contact_info[1]
-    return first_name, last_name, email
+    try:
+        contact_info = info.split('-')
+        first_name, last_name = contact_info[0].split('_')
+        email = contact_info[1]
+        return first_name, last_name, email
+    except IndexError:
+        raise IndexError('Incorrectly formatted contact info')

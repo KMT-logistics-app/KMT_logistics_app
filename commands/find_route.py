@@ -12,10 +12,11 @@ class FindRouteCommand:
         self._app_data = app_data
 
     def execute(self):
-        start_location, delivery_adress = self._params
-        ensure_valid_location_name(start_location)
-        ensure_valid_location_name(delivery_adress)
-        route = self._app_data.find_route_by_locations(start_location, delivery_adress)
+        start_location, delivery_location = self._params
+        
+        start_location = ensure_valid_location_name(start_location)
+        delivery_location = ensure_valid_location_name(delivery_location)
+        route = self._app_data.find_route_by_locations(start_location, delivery_location)
 
         if route:
             result = [f'Found {len(route)} routes:']
@@ -23,4 +24,4 @@ class FindRouteCommand:
             result.extend(result2)
             return '\n'.join(result)
         else:
-            return "There is no suitable root."
+            return "No suitable route found."
