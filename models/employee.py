@@ -1,4 +1,4 @@
-from constants.roles import Roles
+from models.constants.roles import Roles
 from models.customer import Customer
 from models.package import Package
 from models.route import Route

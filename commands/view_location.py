@@ -13,5 +13,10 @@ class ViewLocationCommand:
 
     def execute(self):
         location = ensure_valid_location_name(self._params[0])
+        user = "Manager"
 
-        return self._app_data.view_location(location)
+        log_user = self._app_data.logged_in_user
+        if user == log_user:
+            return self._app_data.view_location(location)
+        else:
+            return f"You don't have permission"

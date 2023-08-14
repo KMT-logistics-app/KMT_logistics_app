@@ -7,7 +7,7 @@ class Supervisor(Employee):
     def __init__(self, _role) -> None:
         Employee.__init__()
 
-        self._role = Roles.MANAGER
+        self._role = Roles.SUPERVISOR
 
 
     def view_accept_pack(self):

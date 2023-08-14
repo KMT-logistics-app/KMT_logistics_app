@@ -1,5 +1,7 @@
 from models.customer import Customer
+
 from models.package import Package
+
 from models.truck import Truck
 from models.route import Route
 from models.constants.package_status import Package_status
@@ -12,6 +14,7 @@ class ApplicationData:
         self._packages: list[Package] = []
         self._routes: list[Route] = []
         self._customers: list[Customer] = []
+        self._logged_in_user = None
 
     @property
     def packages(self):
@@ -28,6 +31,19 @@ class ApplicationData:
     @property
     def customers(self):
         return tuple(self._customers)
+
+    @property
+    def logged_in_user(self):
+        return self._logged_in_user
+
+    def login_user(self, user_role):
+        if self.logged_in_user != None:
+            return None
+        self._logged_in_user = user_role
+        return user_role
+
+    def logout_user(self):
+        self._logged_in_user = None
 
     def create_customer(self, f_name, l_name, email):
         new_customer = Customer(f_name, l_name, email)
@@ -83,8 +99,8 @@ class ApplicationData:
         found = []
         for route in self._routes:
             if (
-                start_location in route.route_points
-                and delivery_adress in route.route_points
+                    start_location in route.route_points
+                    and delivery_adress in route.route_points
             ):
                 start_idx = route.route_points.index(start_location)
                 if delivery_adress in route.route_points[start_idx:]:
@@ -153,8 +169,8 @@ class ApplicationData:
         city_packages = []
         for package in self._packages:
             if (
-                package.location == location
-                and package.status == Package_status.ACCEPTED
+                    package.location == location
+                    and package.status == Package_status.ACCEPTED
             ):
                 city_packages.append(package)
 
@@ -165,7 +181,6 @@ class ApplicationData:
                 towns[f"{package.end_location}"] = package.weight
                 continue
             towns[f"{package.end_location}"] += package.weight
-
 
         if not len(towns) == 0:
             for key, value in towns.items():
