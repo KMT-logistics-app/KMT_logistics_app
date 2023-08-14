@@ -27,6 +27,9 @@ VALID_ROUTE_STATUS_IN_PROGRESS = "in progress"
 VALID_ROUTE_STATUS_PENDING = "pending"
 VALID_ROUTE_STATUS_FINISHED = "finished"
 
+VALID_ROUTE_POINTS = ("Sydney", "Melbourne")
+VALID_DEPARTURE_TIME = datetime(2023, 8, 21, 6, 00)
+
 
 class Truck_Should(unittest.TestCase):
     def test_initializer_AssignsValuesProperly(self):
@@ -86,11 +89,11 @@ class Truck_Should(unittest.TestCase):
                     ),
                 )
 
-    def test_free_intervals_ReturnsProperly(self):
+    def test_free_intervals_ReturnsProperly(
+        self,
+    ):  # this is test for Route.assign_truck and Route.calculate_estimated_time commands
         truck = APP_DATA.create_truck()
-        route_points = ("Sydney", "Melbourne")
-        departure_time = datetime(year=2023, month=8, day=21, hour=6, minute=00)
-        route = APP_DATA.create_route(route_points, departure_time)
+        route = APP_DATA.create_route(VALID_ROUTE_POINTS, VALID_DEPARTURE_TIME)
         route.assign_truck(truck)
         truck._routes.append(route)
 
@@ -104,9 +107,7 @@ class Truck_Should(unittest.TestCase):
 
     def test_str_method_ReturnsProperly(self):
         truck = APP_DATA.create_truck()
-        route_points = ("Sydney", "Melbourne")
-        departure_time = datetime(2023, 8, 21, 6, 00)
-        route = APP_DATA.create_route(route_points, departure_time)
+        route = APP_DATA.create_route(VALID_ROUTE_POINTS, VALID_DEPARTURE_TIME)
         route.assign_truck(truck)
         truck._routes.append(route)
         availability = ""
@@ -127,14 +128,12 @@ class Truck_Should(unittest.TestCase):
 
 class Route_Should(unittest.TestCase):
     def test_initializer_AssignsValuesProperly(self):
-        route_points = ("Sydney", "Melbourne")
-        departure_time = datetime(2023, 8, 21, 6, 00)
-        route = APP_DATA.create_route(route_points, departure_time)
+        route = APP_DATA.create_route(VALID_ROUTE_POINTS, VALID_DEPARTURE_TIME)
 
         self.assertEqual(
             (2, VALID_ROUTE_STATUS_PENDING, ("Sydney", "Melbourne"), 877, None, []),
             (
-                route._id,
+                route.route_id,
                 route.status,
                 route.route_points,
                 route.distance,
@@ -144,11 +143,45 @@ class Route_Should(unittest.TestCase):
         )
 
     def test_assign_package_AssignsPackageProperly(self):
-        route_points = ("Sydney", "Melbourne")
-        departure_time = datetime(2023, 8, 21, 6, 00)
-        route = APP_DATA.create_route(route_points, departure_time)
+        route = APP_DATA.create_route(VALID_ROUTE_POINTS, VALID_DEPARTURE_TIME)
         customer = Customer("Petar", "Ivanov", "pepi@mail.bg")
         package = APP_DATA.create_package("Sydney", "Melbourne", 500, customer)
         route.assign_package(package)
 
         self.assertEqual(package, route.packages[0])
+
+    def test_truck_capacity_and_packages_weight_CalculateProperly(self):
+        route = APP_DATA.create_route(VALID_ROUTE_POINTS, VALID_DEPARTURE_TIME)
+        customer = Customer("Petar", "Ivanov", "pepi@mail.bg")
+        package_one = APP_DATA.create_package("Sydney", "Melbourne", 500, customer)
+        package_two = APP_DATA.create_package("Sydney", "Melbourne", 500, customer)
+        truck = APP_DATA.create_truck()
+        route.assign_package(package_one)
+        route.assign_package(package_two)
+        route.assign_truck(truck)
+
+        self.assertEqual(
+            truck.capacity - package_one.weight - package_two.weight,
+            route.truck_capacity(),
+        )
+
+    def test_str_ReturnsCorrectString(self):
+        route = APP_DATA.create_route(VALID_ROUTE_POINTS, VALID_DEPARTURE_TIME)
+        customer = Customer("Petar", "Ivanov", "pepi@mail.bg")
+        package_one = APP_DATA.create_package("Sydney", "Melbourne", 500, customer)
+        truck = APP_DATA.create_truck()
+        route.assign_package(package_one)
+        route.assign_truck(truck)
+        self.assertEqual(
+            f'Route ID: {route._id}\
+        \n  Status: {route.status}\
+        \n  Total distance: {route._distance}km\
+        \n  Route details: {" -> ".join(route.route_points)}\
+        \n  Packages: {len(route._packages)} with total weight {route.packages_weight()}kgs\
+        \n  Truck assigned: \n{str(route.truck) if route.truck else None}',
+            str(route),
+        )
+
+
+class Package_Should(unittest.TestCase):
+    pass

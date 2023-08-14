@@ -1,16 +1,13 @@
-from employee import Employee
-from core.application_data import ApplicationData
-from constants.roles import Roles
+from models.employee import Employee
+
 
 
 class Manager(Employee):
     def __init__(self, _role) -> None:
         Employee.__init__()
 
-        self._role = Roles.MANAGER
 
-    def get_routes_in_progress(self):
-        return self._appdata.view_routes_in_progress()
+
 
 
 

@@ -13,6 +13,8 @@ from commands.create_truck import CreateTruckCommand
 from commands.view_locations import ViewLocationsCommand
 from commands.view_location import ViewLocationCommand
 from commands.find_free_trucks_by_location import FindFreeTrucksByLocationCommand
+from commands.login_user import LoginUserCommand
+from commands.logout_user import LogoutUserCommand
 
 
 class CommandFactory:
@@ -61,5 +63,12 @@ class CommandFactory:
         if cmd.lower() == "findfreetrucksbylocation":
             # findfreetrucksbylocation, Sydney
             return FindFreeTrucksByLocationCommand(params, self._app_data)
+        if cmd.lower() == "login":
+            # login, Manager
+            return LoginUserCommand(params, self._app_data)
+        if cmd.lower() == "logout":
+            # logout
+            return LogoutUserCommand(self._app_data)
+
 
         raise ValueError(f"Invalid command: {cmd}")
