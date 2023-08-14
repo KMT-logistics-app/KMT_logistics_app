@@ -13,4 +13,4 @@ class ViewTruckCommand:
 
         truck = self._app_data.find_truck_by_id(truck_id)
 
-        return str(truck)
+        return str(truck) if truck != None else f'Truck with ID {truck_id} doesn\'t exist.'

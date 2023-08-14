@@ -25,11 +25,11 @@ class ViewPackageCommand:
             return f'{result}\
                     \n***Customer left negative feedback:\
                     \n  "What??? You lost my package along the way?!\
-                    \n  I won\'t use your services any more!"'
+                    \n   I won\'t use your services any more!"'
         else:
             first_name = result._contact_info.first_name
             last_name = result._contact_info.last_name
             return f'{str(result)}\
-                    \n***Customer {first_name} {last_name} feedback:\
+                    \n***Customer {first_name} {last_name}\'s feedback:\
                     \n  "Thank you very much! You are the best logistics company :)"'
     

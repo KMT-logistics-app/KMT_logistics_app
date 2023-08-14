@@ -166,9 +166,12 @@ class ApplicationData:
                 continue
             towns[f"{package.end_location}"] += package.weight
 
-        output = [f"{location} has packages for these locations:"]
 
-        for key, value in towns.items():
-            output.append(f"{key} with total weight {value}kg.")
+        if not len(towns) == 0:
+            for key, value in towns.items():
+                output = [f"{location} has packages for these locations:"]
+                output.append(f"{key} with total weight {value}kg.")
+        else:
+            output = [f"No packages in {location}."]
 
         return "\n".join(output)

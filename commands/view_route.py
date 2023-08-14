@@ -12,7 +12,5 @@ class ViewRouteCommand:
         route_id = try_parse_int(self._params[0])
 
         route = self._app_data.find_route_by_id(route_id)
-        # трябва да се напише функция в app_data, която търси и връща пътя по ID
 
-        return str(route)
-        # връща __str__ имплементацията на route
+        return str(route) if route != None else f'Route {route_id} not found'

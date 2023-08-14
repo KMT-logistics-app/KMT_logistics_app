@@ -17,11 +17,10 @@ class ViewPendingPackagesCommand:
                     found_packages[package.start_location] += 1
         
         total_packages = sum(found_packages.values())
-        result = [f'Total packages waiting to be assigned: {total_packages}.']
+        result = [f'Total packages waiting to be assigned: {total_packages}']
         
         for location, packages in found_packages.items():
             result.append(f' - {location}: {packages} packages')
 
         return '\n'.join(result)
     
-# да го оправя така, че да дава информация за всички пакети (брой намерени пакети, локациите им)

@@ -38,5 +38,5 @@ class CreatePackageCommand:
         else:
             customer.add_package(package)
         
-        return f"Package from {first_name} {last_name} was created."
+        return f"Package from {first_name} {last_name} was accepted."
 
