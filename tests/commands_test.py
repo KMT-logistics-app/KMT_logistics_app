@@ -103,9 +103,6 @@ class AssignPackageCommand_Should(unittest.TestCase):
         # Arrange & Act
         self._app_data = ApplicationData()
         
-        # AssignTruckCommand.execute(CommandFactory.create(self, 'assigntruck, 1001, 1'))
-
-
     def test_assignPackageCommand_initsCorrectly(self):
 
         # Arrange & Act
@@ -121,31 +118,42 @@ class AssignPackageCommand_Should(unittest.TestCase):
 
     def test_packageAssignedCorrectly_toRoute(self):
         # Arrange
-        test_truck = self._app_data.create_truck()
-        test_route = self._app_data.create_route(
-            [td.VALID_START_LOCATION, td.VALID_END_LOCATION], datetime(*map(int, td.VALID_DATE.split("/")))
-            )
-        test_package = CommandFactory.create(self, 'assignpackage, 1, 1')
-        
-        # Act
-        result = AssignPackageCommand.execute(test_package)
-                
-        # Assert
-        self.assertEqual(result, "Package 1 was assigned to route 1.")
-
-    def test_assignPackageToRoute_raisesApplicationError_ifPackageAlreadyAssigned(self):
-        # Arrange
+        self._app_data.create_truck()
         test_package = self._app_data.create_package(
             td.VALID_START_LOCATION, td.VALID_END_LOCATION, td.VALID_WEIGHT, td.VALID_CONTACT_INFO
         )
-        test_package = CommandFactory.create(self, 'assignpackage, 1, 1')
+        test_route = self._app_data.create_route(
+            [td.VALID_START_LOCATION, td.VALID_END_LOCATION], datetime(*map(int, td.VALID_DATE.split("/")))
+            )
+        AssignTruckCommand.execute(CommandFactory.create(
+            self, f'assigntruck, {self._app_data._trucks[0].TRUCK_ID}, {self._app_data._routes[0].ROUTE_ID}')
+            )
+        
+        # Act
+        result = AssignPackageCommand.execute(CommandFactory.create(self, f'assignpackage, {str(test_package._id)}, {str(test_route._id)}'))
+                
+        # Assert
+        self.assertEqual(result, f"Package {test_package._id} was assigned to route {test_route._id}.")
+
+    def test_assignPackageToRoute_returnsCorrectMessage_ifPackageAlreadyAssigned(self):
+        # Arrange
+        self._app_data.create_truck()
+        test_package = self._app_data.create_package(
+            td.VALID_START_LOCATION, td.VALID_END_LOCATION, td.VALID_WEIGHT, td.VALID_CONTACT_INFO
+        )
+        test_route = self._app_data.create_route(
+            [td.VALID_START_LOCATION, td.VALID_END_LOCATION], datetime(*map(int, td.VALID_DATE.split("/")))
+            )
+        AssignTruckCommand.execute(CommandFactory.create(
+            self, f'assigntruck, {self._app_data._trucks[0].TRUCK_ID}, {self._app_data._routes[0].ROUTE_ID}')
+            )
 
         # Act
-        AssignPackageCommand.execute(test_package)
+        AssignPackageCommand.execute(CommandFactory.create(self, f'assignpackage, {str(test_package._id)}, {str(test_route._id)}'))
+        result = AssignPackageCommand.execute(CommandFactory.create(self, f'assignpackage, {str(test_package._id)}, {str(test_route._id)}'))
 
         # Assert
-        with self.assertRaises(ApplicationError):
-            AssignPackageCommand.execute(test_package)
+        self.assertEqual(result, f'Package {test_package._id} already assigned.')
 
 class AssignTruckCommand_Should(unittest.TestCase):
     
