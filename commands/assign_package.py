@@ -1,7 +1,7 @@
 from commands.validation_helpers import validate_params_count, try_parse_int
 from core.application_data import ApplicationData
 from models.constants.package_status import Package_status
-
+from errors.application_error import ApplicationError
 
 class AssignPackageCommand:
     def __init__(self, params, app_data: ApplicationData):
@@ -17,7 +17,7 @@ class AssignPackageCommand:
         route = self._app_data.find_route_by_id(route_id)
         
         if package._status == Package_status.ASSIGNED:
-            return f'Package {package_id} already assigned.'
+            raise ApplicationError(f'Package {package_id} already assigned.')
 
         if route.truck_capacity() >= package.weight:
             route.assign_package(package)
