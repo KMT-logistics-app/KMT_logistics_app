@@ -17,7 +17,7 @@ class AssignPackageCommand:
         route = self._app_data.find_route_by_id(route_id)
         
         if package._status == Package_status.ASSIGNED:
-            raise ApplicationError(f'Package {package_id} already assigned.')
+            return f'Package {package_id} already assigned.'
 
         if route.truck_capacity() >= package.weight:
             route.assign_package(package)
