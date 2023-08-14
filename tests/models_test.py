@@ -5,6 +5,8 @@ from datetime import datetime
 from models.customer import Customer
 from models.package import Package
 from models.constants.package_status import Package_status
+from datetime import datetime, timedelta
+
 
 VALID_TRUCK_STATUS_FREE = "free"
 VALID_TRUCK_STATUS_BUSY = "busy"
@@ -184,7 +186,16 @@ class Package_Should(unittest.TestCase):
         package = Package("Sydney", "Darwin", 1000, VALID_CUSTOMER)
 
         self.assertEqual(
-            ("Sydney", "Darwin", 1000, VALID_CUSTOMER.first_name, None, None, Package_status.ACCEPTED),
+            (
+                "Sydney",
+                "Darwin",
+                1000,
+                VALID_CUSTOMER.first_name,
+                None,
+                None,
+                Package_status.ACCEPTED,
+                timedelta(hours=3935 / 87),
+            ),
             (
                 package.start_location,
                 package.end_location,
@@ -192,6 +203,48 @@ class Package_Should(unittest.TestCase):
                 package._contact_info.first_name,
                 package.estimated_arrival_time,
                 package.route,
-                package.status
+                package.status,
+                package.delivery_time_needed,
             ),
+        )
+
+    def test_package_STR_and_DETAILS_ReturnsCorrectly(self):
+        self.assertEqual(
+            f"Package: #{VALID_PACKAGE_ONE._id}\
+        \n  Expected delivery time: {VALID_PACKAGE_ONE.estimated_arrival_time}.\
+        \n  Details:   Weight {VALID_PACKAGE_ONE.weight}kgs\
+            \n  Accepted in {VALID_PACKAGE_ONE.start_location}: {VALID_PACKAGE_ONE._accepted_time.strftime('%Y/%m/%d, %H:%M')}\
+            \n  Status: {VALID_PACKAGE_ONE.status}\
+            \n  Customer: {VALID_PACKAGE_ONE._contact_info.first_name} {VALID_PACKAGE_ONE._contact_info.last_name} - {VALID_PACKAGE_ONE._contact_info.email}",
+            str(VALID_PACKAGE_ONE),
+        )
+
+
+class Customer_Should(unittest.TestCase):
+    def test_initializer_AssignsProperly(self):
+        self.assertEqual(
+            ("Petar", "Ivanov", "pepi@mail.bg"),
+            (VALID_CUSTOMER.first_name, VALID_CUSTOMER.last_name, VALID_CUSTOMER.email),
+        )
+
+    def test_AddPackageCommand_AddsPackagesProperly(self):
+        customer = Customer("Ivan", "Ivanov", "IIvanov@gmail.com")
+        pallet = Package("Sydney", "Melbourne", 500, customer)
+        customer.add_package(pallet)
+
+        self.assertEqual(pallet, customer.packages[0])
+
+    def test_STR_ReturnsProperly(self):
+        customer = Customer("Dragan", "Draganov", "DDraganov@gmail.com")
+        package = Package("Sydney", "Darwin", 800, customer)
+        customer.add_package(package)
+
+        self.assertEqual(
+            (
+                f"Customer: {customer.first_name} {customer.last_name}\
+            \n  Email address: {customer.email}\
+            \n  Packages: {len(customer.packages)}\
+            \n  {str(customer.packages[0])}"
+            ),
+            str(customer),
         )
