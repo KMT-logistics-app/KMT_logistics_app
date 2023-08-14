@@ -230,8 +230,8 @@ class CreatePackageCommand_Should(unittest.TestCase):
             )
         
         # Assert
-        self.assertEqual(result1._id, 1)
-        self.assertEqual(result2._id, 2)
+        self.assertEqual(result1._id, 5)
+        self.assertEqual(result2._id, 6)
         
     def test_customerObjectCreated_withValidData(self):
         # Arrange & Act

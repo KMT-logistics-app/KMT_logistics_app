@@ -4,7 +4,7 @@ from models.truck import Truck
 from datetime import datetime
 from models.customer import Customer
 from models.package import Package
-
+from models.constants.package_status import Package_status
 
 VALID_TRUCK_STATUS_FREE = "free"
 VALID_TRUCK_STATUS_BUSY = "busy"
@@ -184,7 +184,7 @@ class Package_Should(unittest.TestCase):
         package = Package("Sydney", "Darwin", 1000, VALID_CUSTOMER)
 
         self.assertEqual(
-            ("Sydney", "Darwin", 1000, VALID_CUSTOMER.first_name, None, None),
+            ("Sydney", "Darwin", 1000, VALID_CUSTOMER.first_name, None, None, Package_status.ACCEPTED),
             (
                 package.start_location,
                 package.end_location,
@@ -192,5 +192,6 @@ class Package_Should(unittest.TestCase):
                 package._contact_info.first_name,
                 package.estimated_arrival_time,
                 package.route,
+                package.status
             ),
         )
