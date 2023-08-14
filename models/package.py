@@ -1,16 +1,19 @@
 from models.constants.package_status import Package_status
 from models.constants.cities import Cities
 from datetime import datetime, timedelta
+from models.customer import Customer
 
 
 class Package:
     id_counter = 0
 
-    def __init__(self, start_location, end_location, weight, contact_info) -> None:
+    def __init__(
+        self, start_location, end_location, weight, customer: Customer
+    ) -> None:
         self.weight: float = weight
         self._start_location: str = start_location
         self._end_location: str = end_location
-        self._contact_info = contact_info  # to be modified
+        self._contact_info = customer  # to be modified
         self.route = None
         self._id = self.create_id()
         self._status = Package_status.ACCEPTED
@@ -70,7 +73,8 @@ class Package:
     def package_details(self):
         return f"  Weight {self.weight}kgs\
             \n  Accepted in {self.start_location}: {self._accepted_time.strftime('%Y/%m/%d, %H:%M')}\
-            \n  Status: {self.status}"
+            \n  Status: {self.status}\
+            \n  Customer: {self._contact_info.first_name} {self._contact_info.last_name} - {self._contact_info.email}"
 
     def __str__(self) -> str:
         return f"Package: #{self._id}\

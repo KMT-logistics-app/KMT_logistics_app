@@ -1,10 +1,10 @@
 import unittest
 from core.application_data import ApplicationData
-from commands.create_route import CreateRouteCommand
 from models.truck import Truck
 from datetime import datetime
 from models.customer import Customer
-from models.route import Route
+from models.package import Package
+
 
 VALID_TRUCK_STATUS_FREE = "free"
 VALID_TRUCK_STATUS_BUSY = "busy"
@@ -29,6 +29,9 @@ VALID_ROUTE_STATUS_FINISHED = "finished"
 
 VALID_ROUTE_POINTS = ("Sydney", "Melbourne")
 VALID_DEPARTURE_TIME = datetime(2023, 8, 21, 6, 00)
+VALID_CUSTOMER = Customer("Petar", "Ivanov", "pepi@mail.bg")
+VALID_PACKAGE_ONE = APP_DATA.create_package("Sydney", "Melbourne", 500, VALID_CUSTOMER)
+VALID_PACKAGE_TWO = APP_DATA.create_package("Sydney", "Melbourne", 800, VALID_CUSTOMER)
 
 
 class Truck_Should(unittest.TestCase):
@@ -144,33 +147,26 @@ class Route_Should(unittest.TestCase):
 
     def test_assign_package_AssignsPackageProperly(self):
         route = APP_DATA.create_route(VALID_ROUTE_POINTS, VALID_DEPARTURE_TIME)
-        customer = Customer("Petar", "Ivanov", "pepi@mail.bg")
-        package = APP_DATA.create_package("Sydney", "Melbourne", 500, customer)
-        route.assign_package(package)
+        route.assign_package(VALID_PACKAGE_ONE)
 
-        self.assertEqual(package, route.packages[0])
+        self.assertEqual(VALID_PACKAGE_ONE, route.packages[0])
 
     def test_truck_capacity_and_packages_weight_CalculateProperly(self):
         route = APP_DATA.create_route(VALID_ROUTE_POINTS, VALID_DEPARTURE_TIME)
-        customer = Customer("Petar", "Ivanov", "pepi@mail.bg")
-        package_one = APP_DATA.create_package("Sydney", "Melbourne", 500, customer)
-        package_two = APP_DATA.create_package("Sydney", "Melbourne", 500, customer)
         truck = APP_DATA.create_truck()
-        route.assign_package(package_one)
-        route.assign_package(package_two)
+        route.assign_package(VALID_PACKAGE_ONE)
+        route.assign_package(VALID_PACKAGE_TWO)
         route.assign_truck(truck)
 
         self.assertEqual(
-            truck.capacity - package_one.weight - package_two.weight,
+            truck.capacity - VALID_PACKAGE_ONE.weight - VALID_PACKAGE_TWO.weight,
             route.truck_capacity(),
         )
 
     def test_str_ReturnsCorrectString(self):
         route = APP_DATA.create_route(VALID_ROUTE_POINTS, VALID_DEPARTURE_TIME)
-        customer = Customer("Petar", "Ivanov", "pepi@mail.bg")
-        package_one = APP_DATA.create_package("Sydney", "Melbourne", 500, customer)
         truck = APP_DATA.create_truck()
-        route.assign_package(package_one)
+        route.assign_package(VALID_PACKAGE_ONE)
         route.assign_truck(truck)
         self.assertEqual(
             f'Route ID: {route._id}\
@@ -184,4 +180,17 @@ class Route_Should(unittest.TestCase):
 
 
 class Package_Should(unittest.TestCase):
-    pass
+    def test_initializer_AssignsValuesCorrectly(self):
+        package = Package("Sydney", "Darwin", 1000, VALID_CUSTOMER)
+
+        self.assertEqual(
+            ("Sydney", "Darwin", 1000, VALID_CUSTOMER.first_name, None, None),
+            (
+                package.start_location,
+                package.end_location,
+                package.weight,
+                package._contact_info.first_name,
+                package.estimated_arrival_time,
+                package.route,
+            ),
+        )
