@@ -40,10 +40,7 @@ class Truck:
         if courses == 0:
             return [[datetime.min, datetime.max]]
         if courses == 1:
-            return [
-                [datetime.min, self._routes[0].departure_time],
-                [self._routes[0].calculate_estimated_time(), datetime.max],
-            ]
+            return [[datetime.min, self._routes[0].departure_time],[self._routes[0].calculate_estimated_time(), datetime.max],]
 
         intervals = []
 
