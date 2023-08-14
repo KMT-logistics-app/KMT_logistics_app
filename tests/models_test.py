@@ -4,6 +4,7 @@ from commands.create_route import CreateRouteCommand
 from models.truck import Truck
 from datetime import datetime
 from models.customer import Customer
+from models.route import Route
 
 VALID_TRUCK_STATUS_FREE = "free"
 VALID_TRUCK_STATUS_BUSY = "busy"
@@ -131,9 +132,9 @@ class Route_Should(unittest.TestCase):
         route = APP_DATA.create_route(route_points, departure_time)
 
         self.assertEqual(
-            (1, VALID_ROUTE_STATUS_PENDING, ("Sydney", "Melbourne"), 877, None, []),
+            (2, VALID_ROUTE_STATUS_PENDING, ("Sydney", "Melbourne"), 877, None, []),
             (
-                route.ROUTE_ID,
+                route._id,
                 route.status,
                 route.route_points,
                 route.distance,
