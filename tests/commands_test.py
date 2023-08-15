@@ -95,11 +95,14 @@ class ValidationHelpers_Should(unittest.TestCase):
             create_customer_info(td.INVALID_CONTACT_INFO)
 
 
+# validation of the user roles to be added
+
 class AssignPackageCommand_Should(unittest.TestCase):
 
     def setUp(self):
         # Arrange & Act
         self._app_data = ApplicationData()
+        self._app_data.logged_in_user = 'employee'
         
     def test_assignPackageCommand_initsCorrectly(self):
 
@@ -117,6 +120,7 @@ class AssignPackageCommand_Should(unittest.TestCase):
     def test_packageAssignedCorrectly_toRoute(self):
         # Arrange
         self._app_data.create_truck()
+
         test_package = self._app_data.create_package(
             td.VALID_START_LOCATION, td.VALID_END_LOCATION, td.VALID_WEIGHT, td.VALID_CONTACT_INFO
         )
@@ -158,6 +162,7 @@ class AssignTruckCommand_Should(unittest.TestCase):
     def setUp(self):
         # Arrange & Act
         self._app_data = ApplicationData()
+        self._app_data.logged_in_user = 'employee'
 
     def test_assignTruckCommand_initsCorrectly(self):
         # test correct result if truck assigned properly
@@ -179,6 +184,7 @@ class CalculateDistanceCommand_Should(unittest.TestCase):
     def setUp(self):
         # Arrange & Act
         self._app_data = ApplicationData()
+        self._app_data.logged_in_user = 'employee'
     
     def test_calculateDistanceCommand_initsCorrectly(self):
         # test correct result with valid data passed 
@@ -197,6 +203,7 @@ class CreatePackageCommand_Should(unittest.TestCase):
     def setUp(self):
         # Arrange & Act
         self._app_data = ApplicationData()
+        self._app_data.logged_in_user = 'employee'
 
     def test_createPackageCommand_initsCorrectly(self):
 
@@ -228,8 +235,8 @@ class CreatePackageCommand_Should(unittest.TestCase):
             )
         
         # Assert
-        self.assertEqual(result1._id, 5)
-        self.assertEqual(result2._id, 6)
+        self.assertEqual(result1._id, 1)
+        self.assertEqual(result2._id, 2)
         
     def test_customerObjectCreated_withValidData(self):
         # Arrange & Act
@@ -255,6 +262,7 @@ class CreateRouteCommand_Should(unittest.TestCase):
     def setUp(self):
         # Arrange & Act
         self._app_data = ApplicationData()
+        self._app_data.logged_in_user = 'employee'
     
     def test_createRouteCommand_initsCorrectly(self):
         # test proper message is returned if the route points are less than two
@@ -295,6 +303,7 @@ class FindFreeTrucksByLocationCommand_Should(unittest.TestCase):
     def setUp(self):
         # Arrange & Act
         self._app_data = ApplicationData()
+        self._app_data.logged_in_user = 'employee'
     
     def test_findFreeTrucksByLocationCommand_initsCorrectly(self):
         # test correct message if no free trucks are found
@@ -314,6 +323,7 @@ class FindRouteCommand_Should(unittest.TestCase):
     def setUp(self):
         # Arrange & Act
         self._app_data = ApplicationData()
+        self._app_data.logged_in_user = 'employee'
     
     def test_findRouteCommand_initsCorrectly(self):
         # test correct string is returned if routes are found
@@ -333,6 +343,7 @@ class ViewLocationCommand_Should(unittest.TestCase):
     def setUp(self):
         # Arrange & Act
         self._app_data = ApplicationData()
+        self._app_data.logged_in_user = 'employee'
     
     def test_viewLocationCommand_initsCorrectly(self):
         # test return correct information about the searched location
@@ -352,6 +363,7 @@ class ViewLocationsCommand_Should(unittest.TestCase):
     def setUp(self):
         # Arrange & Act
         self._app_data = ApplicationData()
+        self._app_data.logged_in_user = 'manager'
     
     def test_viewLocationsCommand_initsCorrectly(self):
         # test for correct output if the user is a manager
@@ -370,6 +382,7 @@ class ViewPackageCommand_Should(unittest.TestCase):
     def setUp(self):
         # Arrange & Act
         self._app_data = ApplicationData()
+        self._app_data.logged_in_user = 'employee'
     
     def test_viewPackageCommand_initsCorrectly(self):
         # Arrange & Act
@@ -402,6 +415,7 @@ class ViewPendingPackagesCommand_Should(unittest.TestCase):
     def setUp(self):
         # Arrange & Act
         self._app_data = ApplicationData()
+        self._app_data.logged_in_user = 'manager'
     
     def test_viewPendingPackagesCommand_initsCorrectly(self):
         # test correct return when there are no packages accepted
