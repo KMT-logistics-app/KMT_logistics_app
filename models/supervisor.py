@@ -1,14 +1,13 @@
 from employee import Employee
 from constants.roles import Roles
-from core.application_data import ApplicationData
 
 
 class Supervisor(Employee):
-    def __init__(self, _role) -> None:
+    def __init__(self) -> None:
         Employee.__init__()
 
         self._role = Roles.SUPERVISOR
 
-
-    def view_accept_pack(self):
-        return self._appdata.get_accepted_packages()
+    @property
+    def role(self):
+        return self._role

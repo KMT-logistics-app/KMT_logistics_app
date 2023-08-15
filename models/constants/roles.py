@@ -1,4 +1,4 @@
 class Roles:
-    WORKER = 'worker'
+    EMPLOYEE = 'employee'
     MANAGER = 'manager'
     SUPERVISOR = 'supervisor'

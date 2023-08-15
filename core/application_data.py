@@ -1,7 +1,5 @@
 from models.customer import Customer
-
 from models.package import Package
-
 from models.truck import Truck
 from models.route import Route
 from models.constants.package_status import Package_status
@@ -37,10 +35,10 @@ class ApplicationData:
         return self._logged_in_user
 
     def login_user(self, user_role):
-        if self.logged_in_user != None:
-            return None
+        # if self.logged_in_user != None:
+        #     return None
         self._logged_in_user = user_role
-        return user_role
+        # return user_role
 
     def logout_user(self):
         self._logged_in_user = None
