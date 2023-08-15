@@ -19,8 +19,10 @@ from commands.validation_helpers import (
     create_customer_info, try_parse_float, try_parse_int, 
     validate_params_count, ensure_valid_location_name
     )
+from models.constants.truck_specs import TruckSpecs, TruckBrand
 from models.customer import Customer
 from models.route import Route
+from models.truck import Truck
 import test_data as td
 import unittest
 
@@ -114,9 +116,6 @@ class AssignPackageCommand_Should(unittest.TestCase):
         self.assertIsInstance(result, AssignPackageCommand)
         self.assertIsInstance(result._app_data, ApplicationData)
         self.assertEqual(len(result._params), 2)
-       
-        # test for proper error if the route's truck have no capacity
-        # test for proper message if there is no truck assigned to the route
 
     def test_packageAssignedCorrectly_toRoute(self):
         # Arrange
@@ -158,6 +157,38 @@ class AssignPackageCommand_Should(unittest.TestCase):
         # Assert
         self.assertEqual(result, f'Package {test_package._id} already assigned.')
 
+    def test_assignPackageToRoute_returnsCorrectMessage_ifTruckCapacityNotEnough(self):
+        # Arrange
+        self._app_data.create_truck()
+        test_package = self._app_data.create_package(
+            td.VALID_START_LOCATION, td.VALID_END_LOCATION, 50000, td.VALID_CONTACT_INFO
+        )
+        test_route = self._app_data.create_route(
+            [td.VALID_START_LOCATION, td.VALID_END_LOCATION], datetime(*map(int, td.VALID_DATE.split("/")))
+            )
+        AssignTruckCommand.execute(CommandFactory.create(
+            self, f'assigntruck, {self._app_data._trucks[0].TRUCK_ID}, {self._app_data._routes[0].ROUTE_ID}')
+            )
+
+        # Act
+        result = AssignPackageCommand.execute(CommandFactory.create(self, f'assignpackage, {str(test_package._id)}, {str(test_route._id)}'))
+
+        # Assert
+        self.assertEqual(result, f"The truck in route {test_route._id} don't have capacity for this package. You have to create another route.")
+
+    def test_assignPackageToRoute_raisesAttributeError_ifNoTruckAssignedToRoute(self):
+        # Arrange
+        self._app_data.create_truck()
+        test_package = self._app_data.create_package(
+            td.VALID_START_LOCATION, td.VALID_END_LOCATION, td.VALID_WEIGHT, td.VALID_CONTACT_INFO
+        )
+        test_route = self._app_data.create_route(
+            [td.VALID_START_LOCATION, td.VALID_END_LOCATION], datetime(*map(int, td.VALID_DATE.split("/")))
+            )
+        # Act & Assert
+        with self.assertRaises(AttributeError):
+            AssignPackageCommand.execute(CommandFactory.create(self, f'assignpackage, {str(test_package._id)}, {str(test_route._id)}'))
+
 class AssignTruckCommand_Should(unittest.TestCase):
     
     def setUp(self):
@@ -166,10 +197,6 @@ class AssignTruckCommand_Should(unittest.TestCase):
         self._app_data.logged_in_user = 'employee'
 
     def test_assignTruckCommand_initsCorrectly(self):
-        # test correct result if truck assigned properly
-        # test correct result if truck already assigned
-        # test correct result if no route found
-        # test correct result if truck id incorrect 
         
         # Arrange & Act
         result = CommandFactory.create(self, 'assigntruck, 1010, 1')
@@ -178,6 +205,57 @@ class AssignTruckCommand_Should(unittest.TestCase):
         self.assertIsInstance(result, AssignTruckCommand)
         self.assertIsInstance(result._app_data, ApplicationData)
         self.assertEqual(len(result._params), 2)
+
+        # test correct result if no route found
+        
+    def test_assignTruckCommand_asignsTruckToRouteCorrectly(self):
+        # Arrange
+        self._app_data.create_truck()
+        self._app_data.create_package(
+            td.VALID_START_LOCATION, td.VALID_END_LOCATION, 50000, td.VALID_CONTACT_INFO
+        )
+        self._app_data.create_route(
+            [td.VALID_START_LOCATION, td.VALID_END_LOCATION], datetime(*map(int, td.VALID_DATE.split("/")))
+            )
+        truck_id = self._app_data._trucks[0].TRUCK_ID
+        route_id = self._app_data._routes[0].ROUTE_ID
+        # Act
+        result = AssignTruckCommand.execute(CommandFactory.create(
+            self, f'assigntruck, {truck_id}, {route_id}')
+            )
+
+        # Assert
+        self.assertEqual(result, f"Truck {truck_id} assigned to route {route_id}")
+
+    def test_asignTruckCommandReturns_correctMessageIfTruckAlreadyAssigned(self):
+        # Arrange
+        self._app_data.create_truck()
+        self._app_data.create_package(
+            td.VALID_START_LOCATION, td.VALID_END_LOCATION, 50000, td.VALID_CONTACT_INFO
+        )
+        self._app_data.create_route(
+            [td.VALID_START_LOCATION, td.VALID_END_LOCATION], datetime(*map(int, td.VALID_DATE.split("/")))
+            )
+        
+        # Act
+        AssignTruckCommand.execute(CommandFactory.create(self, 'assigntruck, 1001, 1'))
+        result2 = AssignTruckCommand.execute(CommandFactory.create(self, 'assigntruck, 1001, 1'))
+
+        # Assert
+        self.assertEqual(result2, f'Truck {1001} already assigned.')
+
+    def test_assignTruckCommandReturns_correctMessageIfNoRouteIsFound(self):
+        # Arrange
+        self._app_data.create_truck()
+        self._app_data.create_package(
+            td.VALID_START_LOCATION, td.VALID_END_LOCATION, 50000, td.VALID_CONTACT_INFO
+        )
+        
+        # Act
+        result = AssignTruckCommand.execute(CommandFactory.create(self, 'assigntruck, 1001, 1'))
+
+        # Assert
+        self.assertEqual(result, f'Route {1} not found.')
 
 
 class CalculateDistanceCommand_Should(unittest.TestCase):
@@ -188,9 +266,6 @@ class CalculateDistanceCommand_Should(unittest.TestCase):
         self._app_data.logged_in_user = 'employee'
     
     def test_calculateDistanceCommand_initsCorrectly(self):
-        # test correct result with valid data passed 
-        # only one test case because if the data is invalid it will raise errors before that
-
         # Arrange & Act
         result = CommandFactory.create(self, 'calculatedistance, sydney, melbourne')
         
@@ -199,6 +274,13 @@ class CalculateDistanceCommand_Should(unittest.TestCase):
         self.assertIsInstance(result._app_data, ApplicationData)
         self.assertEqual(len(result._params), 2)
 
+    def test_calculateDistanceCommand_returnsCorrectResult(self):
+        # Arrange & Act
+        command = CommandFactory.create(self, 'calculatedistance, sydney, melbourne')
+        result = CalculateDistanceCommand.execute(command)
+
+        # Assert
+        self.assertEqual(result, 'Sydney - Melbourne -> 877km; approx. travel time: 10hours and 4 minutes.')
 
 class CreatePackageCommand_Should(unittest.TestCase):
     def setUp(self):
@@ -266,12 +348,6 @@ class CreateRouteCommand_Should(unittest.TestCase):
         self._app_data.logged_in_user = 'employee'
     
     def test_createRouteCommand_initsCorrectly(self):
-        # test proper message is returned if the route points are less than two
-        # test datetime object is created from the data provided
-        # test correct route object is cerated with valid data
-        # test correct message returned when the route is created
-        # test id is incremented
-
         # Arrange & Act
         result = CommandFactory.create(self, f'createroute, {td.VALID_ROUTE}')
         
@@ -279,6 +355,24 @@ class CreateRouteCommand_Should(unittest.TestCase):
         self.assertIsInstance(result, CreateRouteCommand)
         self.assertIsInstance(result._app_data, ApplicationData)
         self.assertEqual(len(result._params), 3)
+
+    def test_createRouteCommand_raisesValueError_withNoEndLocation(self):
+        # Arrange, act & assert
+
+        with self.assertRaises(ValueError):
+            CommandFactory.create(self, f'createroute, {td.INVALID_ROUTE}')
+
+    def test_createRouteCommand_idIncremented_and_departureTimeIsDatetimeObject(self):
+        # Arrange & Act
+        result = CreateRouteCommand.execute(CommandFactory.create(self, f'createroute, {td.VALID_ROUTE}'))
+        CreateRouteCommand.execute(CommandFactory.create(self, f'createroute, {td.VALID_ROUTE}'))
+        
+        # Assert
+        self.assertIsInstance(self._app_data._routes[0], Route)
+        self.assertIsInstance(self._app_data._routes[0].departure_time, datetime)
+        self.assertEqual(self._app_data._routes[0].route_id, 1)
+        self.assertEqual(self._app_data._routes[1].route_id, 2)
+        self.assertEqual(result, f"Delivery route {1} was created.")
 
 
 class CreateTruckCommand_Should(unittest.TestCase):
@@ -288,15 +382,32 @@ class CreateTruckCommand_Should(unittest.TestCase):
         self._app_data = ApplicationData()
     
     def test_createTruckCommand_initsCorrectly(self):
-        # test correct object is created with every instance
-        # test id is incremented with correct truck specs
-
         # Arrange & Act
         result = CommandFactory.create(self, f'createtruck')
         
         # Assert
         self.assertIsInstance(result, CreateTruckCommand)
         self.assertIsInstance(result._app_data, ApplicationData)
+
+    def test_createTruckCommand_truckIdIsIncremented_and_truckSpecsChange(self):
+        # Arrange, Act & Assert
+        
+        for _ in range(40):
+            CreateTruckCommand.execute(CommandFactory.create(self, f'createtruck'))
+            test_truck = self._app_data._trucks[-1]
+        
+            if 1000 < test_truck._truck_id < 1010:
+                self.assertEqual(test_truck._brand, TruckBrand.SCANIA) 
+                self.assertEqual(test_truck._capacity, TruckSpecs.CAPACITY_SCANIA)
+                self.assertEqual(test_truck._range, TruckSpecs.MAX_RANGE_SCANIA) 
+            elif 1011 < test_truck._truck_id < 1025:
+                self.assertEqual(test_truck._brand, TruckBrand.MAN) 
+                self.assertEqual(test_truck._capacity, TruckSpecs.CAPACITY_MAN)
+                self.assertEqual(test_truck._range, TruckSpecs.MAX_RANGE_MAN)
+            elif 1026 < test_truck._truck_id < 1040:
+                self.assertEqual(test_truck._brand, TruckBrand.ACTROSS) 
+                self.assertEqual(test_truck._capacity, TruckSpecs.CAPACITY_ACTROSS)
+                self.assertEqual(test_truck._range, TruckSpecs.MAX_RANGE_ACTROSS)
 
 
 class FindFreeTrucksByLocationCommand_Should(unittest.TestCase):
@@ -307,9 +418,6 @@ class FindFreeTrucksByLocationCommand_Should(unittest.TestCase):
         self._app_data.logged_in_user = 'employee'
     
     def test_findFreeTrucksByLocationCommand_initsCorrectly(self):
-        # test correct message if no free trucks are found
-        # test correct message if free trucks are found
-        
         # Arrange & Act
         result = CommandFactory.create(self, f'findfreetrucksbylocation, {td.VALID_START_LOCATION}')
         
@@ -317,6 +425,30 @@ class FindFreeTrucksByLocationCommand_Should(unittest.TestCase):
         self.assertIsInstance(result, FindFreeTrucksByLocationCommand)
         self.assertIsInstance(result._app_data, ApplicationData)
         self.assertEqual(len(result._params), 1)
+
+    def test_findFreeTrucksByLocationCommand_correctMessagereturned_ifTruckFound(self):
+        # Arrange
+        CreateTruckCommand.execute(CommandFactory.create(self, f'createtruck'))
+        command = CommandFactory.create(self, f'findfreetrucksbylocation, {td.VALID_START_LOCATION}')
+        
+        # Act
+        result = FindFreeTrucksByLocationCommand.execute(command)
+
+        # Assert
+        self.assertIsInstance(result, str)
+        self.assertEqual(len(result), 250)
+
+    def test_findFreeTrucksByLocationCommand_correctMessagereturned_ifNoTruckFound(self):
+        # Arrange
+        CreateTruckCommand.execute(CommandFactory.create(self, f'createtruck'))
+        command = CommandFactory.create(self, f'findfreetrucksbylocation, {td.VALID_MID_LOCATION}')
+        
+        # Act
+        result = FindFreeTrucksByLocationCommand.execute(command)
+
+        # Assert
+        self.assertIsInstance(result, str)
+        self.assertEqual(result, f"No free trucks at {td.VALID_MID_LOCATION}")
 
 
 class FindRouteCommand_Should(unittest.TestCase):
@@ -327,9 +459,6 @@ class FindRouteCommand_Should(unittest.TestCase):
         self._app_data.logged_in_user = 'employee'
     
     def test_findRouteCommand_initsCorrectly(self):
-        # test correct string is returned if routes are found
-        # test correct string is returned if no routes are found
-        
         # Arrange & Act
         result = CommandFactory.create(self, f'findroute, {td.VALID_START_LOCATION}, {td.VALID_END_LOCATION}')
         
@@ -338,6 +467,28 @@ class FindRouteCommand_Should(unittest.TestCase):
         self.assertIsInstance(result._app_data, ApplicationData)
         self.assertEqual(len(result._params), 2)
 
+    def test_findRouteCommand_ifRouteFound_returnsCorrectMessage(self):
+        # Arrange
+        CreateRouteCommand.execute(CommandFactory.create(self, f'createroute, {td.VALID_ROUTE}'))
+
+        # Act
+        result = self._app_data.find_route_by_locations(td.VALID_START_LOCATION, td.VALID_END_LOCATION)
+
+        # Assert
+        self.assertIsInstance(result, list)
+        self.assertEqual(len(result), 1)
+
+    def test_findRouteCommand_ifNoRouteFound_returnsCorrectMessage(self):
+        # Arrange
+        command = CommandFactory.create(self, f'findroute, {td.VALID_START_LOCATION}, {td.VALID_END_LOCATION}')
+        
+        # Act
+        result = FindRouteCommand.execute(command)
+
+        # Assert
+        self.assertIsInstance(result, str)
+        self.assertEqual(result, "No suitable route found.")
+    
 
 class ViewLocationCommand_Should(unittest.TestCase):
     

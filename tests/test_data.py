@@ -8,6 +8,7 @@ VALID_MID_LOCATION = 'Adelaide'
 VALID_END_LOCATION = 'Melbourne'
 VALID_ROUTE = f'{VALID_START_LOCATION}, {VALID_END_LOCATION}, {VALID_DATE}'
 
+INVALID_ROUTE = f'{VALID_START_LOCATION}, {VALID_DATE}'
 INVALID_LOCATION_NAME = 'Sofia'
 
 # package(start_location, end_location, weight, contact_info)

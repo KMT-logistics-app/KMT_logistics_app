@@ -19,10 +19,14 @@ class AssignTruckCommand:
         truck = self._app_data.find_truck_by_id(truck_id)
         route = self._app_data.find_route_by_id(route_id)
 
-        if truck._status == TruckStatus.BUSY:
-            return f'Truck {truck_id} already assigned.'
-        
-        route.assign_truck(truck)
-        truck._routes.append(route)
+        if not route == None:
+            if truck._status == TruckStatus.BUSY or (route.truck != None and route.truck._truck_id == truck.truck_id):
+                return f'Truck {truck_id} already assigned.'
+            
+            route.assign_truck(truck)
+            truck._routes.append(route)
+            
+            return f"Truck {truck_id} assigned to route {route_id}"
+        else:
 
-        return f"Truck {truck_id} assigned to route {route_id}"
+            return f'Route {route_id} not found.'
