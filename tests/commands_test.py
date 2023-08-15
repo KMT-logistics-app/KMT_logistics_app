@@ -20,6 +20,7 @@ from commands.validation_helpers import (
     validate_params_count, ensure_valid_location_name
     )
 from models.customer import Customer
+from models.route import Route
 import test_data as td
 import unittest
 
@@ -235,8 +236,8 @@ class CreatePackageCommand_Should(unittest.TestCase):
             )
         
         # Assert
-        self.assertEqual(result1._id, 1)
-        self.assertEqual(result2._id, 2)
+        self.assertEqual(result1._id, self._app_data._packages[0]._id)
+        self.assertEqual(result2._id, self._app_data._packages[1]._id)
         
     def test_customerObjectCreated_withValidData(self):
         # Arrange & Act
