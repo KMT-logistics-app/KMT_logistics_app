@@ -97,8 +97,8 @@ class ApplicationData:
         found = []
         for route in self._routes:
             if (
-                    start_location in route.route_points
-                    and delivery_adress in route.route_points
+                start_location in route.route_points
+                and delivery_adress in route.route_points
             ):
                 start_idx = route.route_points.index(start_location)
                 if delivery_adress in route.route_points[start_idx:]:
@@ -140,6 +140,23 @@ class ApplicationData:
 
         return "\n".join(result_to_return)
 
+    def view_pending_packages(self):
+        found_packages = {}
+        for package in self._packages:
+            if package.status == Package_status.ACCEPTED:
+                if package.start_location not in found_packages:
+                    found_packages[package.start_location] = 1
+                else:
+                    found_packages[package.start_location] += 1
+
+        total_packages = sum(found_packages.values())
+        result = [f"Total packages waiting to be assigned: {total_packages}."]
+
+        for location, packages in found_packages.items():
+            result.append(f" - {location}: {packages} package/s")
+
+        return "\n".join(result)
+
     def view_locations(self):
         towns = {
             "Sydney": [],
@@ -167,8 +184,8 @@ class ApplicationData:
         city_packages = []
         for package in self._packages:
             if (
-                    package.location == location
-                    and package.status == Package_status.ACCEPTED
+                package.location == location
+                and package.status == Package_status.ACCEPTED
             ):
                 city_packages.append(package)
 

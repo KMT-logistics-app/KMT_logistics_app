@@ -18,6 +18,8 @@ class Truck:
         if len(self._routes) == 0:
             return "Sydney"
         if self.status == "free":
+            if len(self._routes) == 1:
+                return "Sydney"
             for index in range(len(self._routes)):
                 if (
                     self._routes[index].calculate_estimated_time() <= datetime.now()
@@ -40,7 +42,10 @@ class Truck:
         if courses == 0:
             return [[datetime.min, datetime.max]]
         if courses == 1:
-            return [[datetime.min, self._routes[0].departure_time],[self._routes[0].calculate_estimated_time(), datetime.max],]
+            return [
+                [datetime.min, self._routes[0].departure_time],
+                [self._routes[0].calculate_estimated_time(), datetime.max],
+            ]
 
         intervals = []
 
@@ -76,7 +81,7 @@ class Truck:
     @property
     def range(self):
         return self._range
-    
+
     @property
     def routes(self):
         return tuple(self._routes)
