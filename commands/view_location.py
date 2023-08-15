@@ -12,11 +12,10 @@ class ViewLocationCommand:
         self._app_data = app_data
 
     def execute(self):
+        if self._app_data.logged_in_user == None:
+            return 'You have to log in to perform this operation!'
+        
         location = ensure_valid_location_name(self._params[0])
-        user = "Manager"
-
-        log_user = self._app_data.logged_in_user
-        if user == log_user:
-            return self._app_data.view_location(location)
-        else:
-            return f"You don't have permission"
+        
+        return self._app_data.view_location(location)
+        

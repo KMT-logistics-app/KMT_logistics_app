@@ -2,11 +2,18 @@
 
 # KMT_logistics_app
 
+# Welcome!
+
+### Thank you for your purchase! We hope that you will be having good experience using our app. 
+### If you encounter any bugs during the work flow, please contact us at armenskipop@radioerevan.com 
+
+
 ## Description:
 The application will be used by employees of a large Australian company aiming to expand its activities to the freight industry. The app will be used to manage the delivery of packages between hubs in major Australian cities. An employee of the company is able to record the details of a delivery package, create or search for suitable delivery routes, and inspect the current state of delivery packages, transport vehicles and delivery routes.
 
 ## What is the work flow:
 
+A user (employee, supervisor or manager) must be logged in in order to perform any task! By default, when the program starts, user with employee rights is logged in.
 1. Employee accepts the package from a customer and creates it in the application.
 2. He/She check if there is a suitable route for it.
 3. If there is a route, the employee adds the package to the route.
@@ -36,6 +43,17 @@ The application will be used by employees of a large Australian company aiming t
 - logout_user - logs out a user
 
 # Models
+
+## Users
+#### There are three types of users with different permissions:
+
+### Employee
+- can execute all commands except view_pending_packages and view_locations
+### Supervisor
+- can execute all commands except view_locations
+### Manager
+- can execute all commands
+
 ## Truck
 #### Properties:
 - id - unique identifier
@@ -98,3 +116,6 @@ The application will be used by employees of a large Australian company aiming t
 - packages - list of customer's packages
 #### Methods:
 - add_package(self, package) - adds package to costomer's packages list
+
+
+## Instructions for executing the commands can be found in the "testing_inputs.md" file

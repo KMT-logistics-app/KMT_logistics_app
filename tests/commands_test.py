@@ -20,8 +20,6 @@ from commands.validation_helpers import (
     validate_params_count, ensure_valid_location_name
     )
 from models.customer import Customer
-from errors.application_error import ApplicationError
-
 import test_data as td
 import unittest
 

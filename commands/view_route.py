@@ -9,8 +9,10 @@ class ViewRouteCommand:
         self._app_data = app_data
 
     def execute(self):
-        route_id = try_parse_int(self._params[0])
+        if self._app_data.logged_in_user == None:
+            return 'You have to log in to perform this operation!'
 
+        route_id = try_parse_int(self._params[0])
         route = self._app_data.find_route_by_id(route_id)
 
         return str(route) if route != None else f'Route {route_id} not found'

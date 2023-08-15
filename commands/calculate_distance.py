@@ -13,6 +13,9 @@ class CalculateDistanceCommand:
         self._app_data = app_data
 
     def execute(self):
+        if self._app_data.logged_in_user == None:
+            return 'You have to log in to perform this operation!'
+
         point_A, point_B = self._params
         point_A = ensure_valid_location_name(point_A)
         point_B = ensure_valid_location_name(point_B)

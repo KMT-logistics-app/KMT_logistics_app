@@ -25,50 +25,36 @@ class CommandFactory:
         cmd, *params = input_line.split(", ")
 
         if cmd.lower() == "assignpackage":
-            # assignpackage, 1, 1
             return AssignPackageCommand(params, self._app_data)
         if cmd.lower() == "viewlocations":
             return ViewLocationsCommand(self._app_data)
         if cmd.lower() == "viewlocation":
-            # viewlocation Darwin
             return ViewLocationCommand(params, self._app_data)
         if cmd.lower() == "createtruck":
-            # createtruck
             return CreateTruckCommand(self._app_data)
         if cmd.lower() == "calculatedistance":
             return CalculateDistanceCommand(params, self._app_data)
         if cmd.lower() == "assigntruck":
-            # assigntruck, 1011, 102
             return AssignTruckCommand(params, self._app_data)
         if cmd.lower() == "createpackage":
-            # createpackage, Alice Springs, Adelaide, 500, Ivan_Ivanov, ivan@mail.au
             return CreatePackageCommand(params, self._app_data)
         if cmd.lower() == "createroute":
-            # createroute, Sydney, Melbourne, 2023/08/08/16/00
             return CreateRouteCommand(params, self._app_data)
         if cmd.lower() == "findroute":
             return FindRouteCommand(params, self._app_data)
-            # findroute, Sydney, Melbourne
         if cmd.lower() == "viewpackage":
             return ViewPackageCommand(params, self._app_data)
-            # viewpackage, 1
         if cmd.lower() == "viewroute":
             return ViewRouteCommand(params, self._app_data)
-            # viewroute, 7
         if cmd.lower() == "viewtruck":
-            # viewtruck, 1011
             return ViewTruckCommand(params, self._app_data)
         if cmd.lower() == "viewpendingpackages":
             return ViewPendingPackagesCommand(self._app_data)
         if cmd.lower() == "findfreetrucksbylocation":
-            # findfreetrucksbylocation, Sydney
             return FindFreeTrucksByLocationCommand(params, self._app_data)
         if cmd.lower() == "login":
-            # login, Manager
             return LoginUserCommand(params, self._app_data)
         if cmd.lower() == "logout":
-            # logout
             return LogoutUserCommand(self._app_data)
-
 
         raise ValueError(f"Invalid command: {cmd}")

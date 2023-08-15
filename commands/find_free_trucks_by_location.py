@@ -1,5 +1,4 @@
 from commands.validation_helpers import validate_params_count, ensure_valid_location_name
-
 from core.application_data import ApplicationData
 
 
@@ -10,6 +9,9 @@ class FindFreeTrucksByLocationCommand:
         self._app_data = app_data
 
     def execute(self):
+        if self._app_data.logged_in_user == None:
+            return 'You have to log in to perform this operation!'
+
         location = ensure_valid_location_name(self._params[0])
         trucks = self._app_data.find_free_trucks_by_location(location)
 

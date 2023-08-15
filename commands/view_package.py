@@ -1,6 +1,5 @@
 from commands.validation_helpers import validate_params_count, try_parse_int
 from core.application_data import ApplicationData
-from models.customer import Customer
 
 
 class ViewPackageCommand:
@@ -10,15 +9,16 @@ class ViewPackageCommand:
         self._app_data = app_data
 
     def execute(self):
-        package_id = try_parse_int(self._params[0])
+        if self._app_data.logged_in_user == None:
+            return 'You have to log in to perform this operation!'
 
+        package_id = try_parse_int(self._params[0])
         package = self._app_data.find_package_by_id(package_id)
 
         if not package == None:
             return self.leave_feedback(package)
         
         return self.leave_feedback(f'Sorry, package {package_id} not found.')
-
 
     def leave_feedback(self, result):
         if isinstance(result, str):

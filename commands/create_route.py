@@ -10,9 +10,10 @@ class CreateRouteCommand:
         self._params = params
         self._app_data = app_data
 
-        # "createroute, Sydney, Melbourne, 2023/08/08/16/00"
-
     def execute(self):
+        if self._app_data.logged_in_user == None:
+            return 'You have to log in to perform this operation!'
+
         route_points = self._params[:-1]
 
         for point in range(len(route_points)):

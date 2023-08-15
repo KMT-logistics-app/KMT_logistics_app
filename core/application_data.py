@@ -12,7 +12,7 @@ class ApplicationData:
         self._packages: list[Package] = []
         self._routes: list[Route] = []
         self._customers: list[Customer] = []
-        self._logged_in_user = None
+        self.logged_in_user = None
 
     @property
     def packages(self):
@@ -34,14 +34,16 @@ class ApplicationData:
     def logged_in_user(self):
         return self._logged_in_user
 
+    @logged_in_user.setter
+    def logged_in_user(self, value):
+        self._logged_in_user = value
+
     def login_user(self, user_role):
-        # if self.logged_in_user != None:
-        #     return None
         self._logged_in_user = user_role
-        # return user_role
+
 
     def logout_user(self):
-        self._logged_in_user = None
+        self.logged_in_user = None
 
     def create_customer(self, f_name, l_name, email):
         new_customer = Customer(f_name, l_name, email)

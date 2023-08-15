@@ -10,6 +10,9 @@ class AssignTruckCommand:
         self._app_data = app_data
 
     def execute(self):
+        if self._app_data.logged_in_user == None:
+            return 'You have to log in to perform this operation!'
+
         truck_id = try_parse_int(self._params[0])
         route_id = try_parse_int(self._params[-1])
 

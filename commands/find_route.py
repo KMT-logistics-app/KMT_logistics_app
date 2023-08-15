@@ -12,6 +12,9 @@ class FindRouteCommand:
         self._app_data = app_data
 
     def execute(self):
+        if self._app_data.logged_in_user == None:
+            return 'You have to log in to perform this operation!'
+
         start_location, delivery_location = self._params
         
         start_location = ensure_valid_location_name(start_location)

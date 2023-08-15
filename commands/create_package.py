@@ -15,23 +15,22 @@ class CreatePackageCommand:
         self._params = params
         self._app_data = app_data
         
-        # createpackage, Alice Springs, Adelaide, 500, Ivan_Ivanov-ivan@mail.au
-        # createpackage, Adelaide, Sydney, 500.3, Ivan_Ivanov-ivan@mail.au
-
     def execute(self):
-        # package info
+        if self._app_data.logged_in_user == None:
+            return 'You have to log in to perform this operation!'
+        
         start_location, delivery_adress, weight, contact_info = self._params
         start_location = ensure_valid_location_name(start_location)
         delivery_adress = ensure_valid_location_name(delivery_adress)
         weight = try_parse_float(weight)
-        # customer info
+
         first_name, last_name, email = create_customer_info(contact_info) 
         customer = Customer(first_name, last_name, email)
-        # if customer is created properly, we can create the package
+
         package = self._app_data.create_package(
             start_location, delivery_adress, weight, customer
         )
-        # add the customer to the app_data customers list and add the package to the customer
+
         if not self._app_data.find_customer_by_email(email):
             self._app_data._customers.append(customer)
             customer.add_package(package)
